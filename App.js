@@ -1,13 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, SafeAreaView, ImageBackground, FlatList } from 'react-native';
-import HomeQuote from './components/homeQuote';
+import { StyleSheet, View, SafeAreaView, ImageBackground } from 'react-native';
 import { randomQuote, randomPicture } from './ApiClientService';
-import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
+import GestureRecognizer from 'react-native-swipe-gestures';
+import HomeQuote from './components/homeQuote';
+import AsyncStorage from '@react-native-community/async-storage';
 
 
 export default function App() {
   const [quote, setQuote] = useState({});
-  const [picture, setPicture] = useState([]);
+  const [picture, setPicture] = useState();
+  const [key, setKey] = useState(0);
+
+  const objToSave = {
+    quote: quote.quote,
+    author: quote.author,
+    picture: picture,
+  }
+
+  const storeData = async () => {
+    try {
+      const jsonObj = JSON.stringify(objToSave);
+      await AsyncStorage.setItem(key, jsonObj);
+      setKey(key + 1);
+    } catch (error) {
+      console.error('oh no something happened:', error);
+    }
+  }
 
   const getRandomQuote = () => {
     randomQuote()
@@ -20,7 +38,7 @@ export default function App() {
 
   const getRandomPicture = () => {
     randomPicture()
-      .then(res => setPicture([res.url]))
+      .then(res => setPicture(res.url))
   }
 
   useEffect(() => {
@@ -36,7 +54,7 @@ export default function App() {
       <View> 
         <ImageBackground 
           style={styles.picture}
-          source={{uri: picture[0]}}>
+          source={{uri: picture}}>
             <GestureRecognizer 
               onSwipeLeft={() => getRandomQuote()}>
               <HomeQuote quote={quote.quote} author={quote.author} />
@@ -44,6 +62,9 @@ export default function App() {
         </ImageBackground>
       </View>
       </GestureRecognizer>
+      <Button
+        title="Me Gusta"
+        onPress={() => {}} />
     </SafeAreaView>
   );
 };
