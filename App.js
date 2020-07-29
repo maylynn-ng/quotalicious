@@ -1,113 +1,64 @@
-import React, { useState, useEffect, Component } from 'react';
-import { StyleSheet, View, SafeAreaView, ImageBackground, Animated } from 'react-native';
-import { FlingGestureHandler, Directions, State } from 'react-native-gesture-handler';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, SafeAreaView, ImageBackground, FlatList } from 'react-native';
 import HomeQuote from './components/homeQuote';
 import { randomQuote, randomPicture } from './ApiClientService';
 
 
-// export default function App() {
-//   const [quote, setQuote] = useState('quotey-quote quote');
-//   const [quoteAuthor, setQuoteAuthor] = useState('Author McAuthorFace');
-//   const [picture, setPicture] = useState('');
+export default function App() {
+  const [quote, setQuote] = useState([{quote: "I'm a frickin quote", author: "me, bitch"}]);
+  const [picture, setPicture] = useState('https://i.picsum.photos/id/566/200/300.jpg?hmac=gDpaVMLNupk7AufUDLFHttohsJ9-C17P7L-QKsVgUQU');
 
-//   const getRandomQuote = () => {
-//     randomQuote()
-//       .then(res => {
-//         setQuote(res.quote.quoteText)
-//         setQuoteAuthor(res.quote.quoteAuthor)
-//       });
-//   }
-
-//   const getRandomPicture = () => {
-//     randomPicture()
-//       .then(res => setPicture(res.url))
-//   }
-
-//   useEffect(() => {
-//     getRandomQuote();
-//     getRandomPicture();
-//   }, [])
-
-
-//   return (
-//     <SafeAreaView>
-//       <View> 
-//         <ImageBackground 
-//         style={styles.container}
-//         source={{
-//           uri: picture
-//         }}>
-//           <FlingGestureHandler
-//             direction={Directions.RIGHT | Directions.LEFT}
-//             onGestureEvent={() => getRandomQuote()}>
-//             <Animated.HomeQuote quote={quote} author={quoteAuthor}/>
-//           </FlingGestureHandler>
-//         </ImageBackground>
-//       </View>
-//     </SafeAreaView>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     height: '100%',
-//     alignContent: 'center',
-//     justifyContent: 'center',
-//   },
-// });
-
-export default class App extends Component {
-
-  constructor(props) {
-    super(props);
-    this.quote = 'quotey quote';
-    this.quoteAuthor = 'author mcAuthorFace';
-    this.picture = '';
-  }
-
-  componentDidMount() {
-    getRandomQuote();
-    getRandomPicture();
-  }
-
-  getRandomQuote = () => {
+  const getRandomQuote = () => {
     randomQuote()
       .then(res => {
-        this.quote = res.quote.quoteText;
-        this.quoteAuthor = res.quote.quoteAuthor
+        setQuote([{
+          quote: res.quote.quoteText,
+          author: res.quote.quoteAuthor}])
       });
   }
 
-  getRandomPicture = () => {
+  const getRandomPicture = () => {
     randomPicture()
-      .then(res => this.picture = res.url)
+      .then(res => setPicture(res.url))
   }
 
-  render() {
-    return (
-      <SafeAreaView>
-        <View> 
-          <ImageBackground 
-          style={styles.container}
-          source={{
-            uri: this.picture
-          }}>
-            <FlingGestureHandler
-              direction={Directions.RIGHT | Directions.LEFT}
-              onGestureEvent={() => this.getRandomQuote()}>
-              <Animated.HomeQuote quote={this.quote} author={this.quoteAuthor}/>
-            </FlingGestureHandler>
-          </ImageBackground>
-        </View>
-      </SafeAreaView>
-    );
-  }
-}
+  useEffect(() => {
+    getRandomQuote();
+    getRandomPicture();
+  }, [])
+
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.container}> 
+        <ImageBackground 
+          style={styles.picture}
+          source={{uri: picture}}>
+          <FlatList
+            data={quote}
+            keyExtractor={item => item.quote}
+            renderItem= {
+              ({item}) =>
+              <HomeQuote quote={item.quote} author={item.author}/>
+            }
+            onRefresh={() => {
+              //getRandomPicture()
+              getRandomQuote()
+            }}
+            refreshing={false}/>
+        </ImageBackground>
+      </View>
+    </SafeAreaView>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     height: '100%',
     alignContent: 'center',
-    justifyContent: 'center',
+  },
+  picture: {
+    height: '100%',
+    width: '100%',
   },
 });
