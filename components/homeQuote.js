@@ -4,7 +4,7 @@ import { View, Text, StyleSheet } from 'react-native';
 const HomeQuote = ({quote, author}) => {
   return (
     <View style={styles.quoteBox}> 
-      <Text style={styles.quote}>" {quote} "</Text>
+      <Text style={styles.quote}>"{quote}"</Text>
       <Text style={styles.author}>-{author}</Text>
     </View>
   )
