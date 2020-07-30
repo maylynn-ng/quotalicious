@@ -1,16 +1,15 @@
 import React from 'react';
 import { SafeAreaView, Button, Text, View, FlatList, ImageBackground, StyleSheet } from 'react-native';
 import HomeQuote from '../components/homeQuote';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const FavoriteList = ({ route }) => {
-  const {favorites, removeFavorite, getSavedFavorites} = route.params;
+const FavoriteList = ({ navigation, favorites, removeFavorite }) => {
+
   return (
     <SafeAreaView>
       <Text>Me Likey</Text>
       <FlatList
         style={styles.list}
-        onRefresh={() => getSavedFavorites()}
-        refreshing={false}
         data={favorites}
         keyExtractor={item => item[0]}
         renderItem={({item}) => 
@@ -18,12 +17,15 @@ const FavoriteList = ({ route }) => {
             <ImageBackground 
               style={styles.picture}
               source={{uri: (JSON.parse(item[1])).picture}} >
-                <HomeQuote 
-                  quote={JSON.parse(item[1]).quote}
-                  author={JSON.parse(item[1]).author} />
+                <TouchableOpacity 
+                  onPress={() => navigation.navigate('FavFocus', item)} >
+                  <HomeQuote 
+                    quote={JSON.parse(item[1]).quote}
+                    author={JSON.parse(item[1]).author} />
+                </TouchableOpacity>
                 <Button 
                   title="UNLIKE"
-                  onPress={() => removeFavorite((JSON.parse(item[0])))} />
+                  onPress={() => removeFavorite((JSON.parse(item[0])).toString())} />
             </ImageBackground>
           </View>
         } >
