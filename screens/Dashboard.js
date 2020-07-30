@@ -46,20 +46,28 @@ export default function Dashboard({ navigation }) {
         : objToSave;
       setFavorites([...favorites, obj])
       const jsonObj = JSON.stringify(obj)
-      await AsyncStorage.setItem(key, jsonObj)
+      const keyStr = key.toString();
+      await AsyncStorage.setItem(keyStr, jsonObj)
       setKey((key) => (+key + 1).toString())
+      alert('saved it for you boo')
     } catch (error) {
       console.error('oh no something happened:', error);
     }
   }
 
-  // const removeFavorite = async () => {
-  //   try {
-      
-  //   } catch (error) {
-  //     console.error('no I dunnae think so', error);
-  //   }
-  // }
+  const removeFavorite = async (unlike) => {
+    try {
+      const storageKey = unlike.toString()
+      await AsyncStorage.removeItem(storageKey)
+      setFavorites((favorites) => {
+        favorites.filter((fav) => fav[0] !== storageKey)
+      });
+      alert("IT'S GONE MUTHAFUCKAAAAAAAAAAA");
+      getSavedFavorites(); 
+    } catch (error) {
+      console.error('no I dunnae think so', error);
+    }
+  }
 
   const getRandomQuote = () => {
     randomQuote()
@@ -115,7 +123,7 @@ export default function Dashboard({ navigation }) {
           onPress={storeData} />
         <Button
           title="YA GUSTIDO"
-          onPress={() => navigation.navigate('FavoriteList', {favorites})} />
+          onPress={() => navigation.navigate('FavoriteList', {favorites, removeFavorite, getSavedFavorites})} />
         </ImageBackground>
       </View>
       </GestureRecognizer>
