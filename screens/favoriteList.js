@@ -7,7 +7,7 @@ const FavoriteList = ({ navigation, favorites, removeFavorite }) => {
 
   return (
     <SafeAreaView>
-      <Text>Me Likey</Text>
+      <Text style={styles.text} >Quotalicious</Text>
       <FlatList
         style={styles.list}
         data={favorites}
@@ -44,6 +44,12 @@ const styles = StyleSheet.create({
   },
   picture: {
     width: '100%',
+  },
+  text: {
+    textAlign: 'center',
+    fontSize: 32,
+    margin: 10,
+    fontWeight: 'bold',
   }
 })
 
