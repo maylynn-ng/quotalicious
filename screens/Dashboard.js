@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, Text, ImageBackground, Button } from 'react-native';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import LottieView from 'lottie-react-native';
@@ -6,10 +6,16 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 import HomeQuote from '../components/homeQuote';
-import { QuoteButton, PictureButton } from '../elements/buttons';
+import ButtonBar from '../components/ButtonBar';
 const heartExplode = require('../animations/heartExplode.json');
 
 export default function Dashboard({ navigation, whichPictures, setQuoteType, quote, picture, setPictureType, storeData, whichQuotes, quoteType }) {
+
+  const [displaySettings, setDisplaySettings] = useState(false);
+
+  const toggleDisplaySettings = () => {
+    setDisplaySettings(prevState => !prevState)
+  }
 
   return (
     <View>
@@ -19,10 +25,19 @@ export default function Dashboard({ navigation, whichPictures, setQuoteType, quo
         <ImageBackground 
           style={styles.picture}
           source={{uri: picture}}>
+            {!displaySettings && <Button
+              title="SETTINGS"
+              onPress={() => toggleDisplaySettings()} />}
+              {displaySettings && (<ButtonBar 
+                toggleDisplaySettings={toggleDisplaySettings}
+                whichPictures={whichPictures} 
+                whichQuotes={whichQuotes} 
+                setQuoteType={setQuoteType} 
+                setPictureType={setPictureType} />)}
             <GestureRecognizer 
               onSwipeLeft={() => whichQuotes(quoteType)}>
               <HomeQuote 
-              quote={quote.quote}
+                quote={quote.quote}
                 author={quote.author} />
             </GestureRecognizer>
             
@@ -32,10 +47,6 @@ export default function Dashboard({ navigation, whichPictures, setQuoteType, quo
           <Button
             title="YA GUSTIDO"
             onPress={() => navigation.navigate('FavoriteList')} />
-          <Button
-            title="SECTION LIST"
-            onPress={() => navigation.navigate('SectionList', {whichPictures, whichQuotes, setQuoteType, setPictureType})} />
-        
           <GestureRecognizer
             onSwipeLeft={() => navigation.navigate('FavoriteList')} >
             <Text>Swipe to favlist</Text>
