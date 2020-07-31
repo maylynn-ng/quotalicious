@@ -8,6 +8,7 @@ import * as Permissions from 'expo-permissions';
 import Dashboard from './screens/Dashboard';
 import FavoriteList from './screens/favoriteList';
 import FavFocus from './screens/FavFocus';
+import ButtonBar from './components/ButtonBar';
 import { randomQuote, randomPicture, getKanye, getTaylor, getDonald, pictureBW, pictureBlur } from './ApiClientService';
 
 const Stack = createStackNavigator();
@@ -117,7 +118,7 @@ const App = () => {
     if (quoteType === 'random') getRandomQuote();
     else if (quoteType === 'kanye') getKanyeQuote();
     else if (quoteType === 'taylor') getTaylorQuote();
-    else if (quoteType === 'donald') getDonaldQuote();
+    else if (quoteType === 'trump') getDonaldQuote();
   }
 
   const whichPictures = (pictureType) => {
@@ -162,6 +163,9 @@ const App = () => {
               {...props}
               />}
           </Stack.Screen>
+          <Stack.Screen
+            name="SectionList"
+            component={ButtonBar} />
           <Stack.Screen
             name="FavoriteList"> 
               {(props) => <FavoriteList
