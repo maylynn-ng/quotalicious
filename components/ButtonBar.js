@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, FlatList, SafeAreaView, StyleSheet, Button } from 'react-native';
 
 import { QuoteButton, PictureButton } from '../elements/buttons';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const ButtonBar = ({whichPictures, toggleDisplaySettings, whichQuotes, setQuoteType, setPictureType}) => {
 
@@ -25,10 +26,9 @@ const ButtonBar = ({whichPictures, toggleDisplaySettings, whichQuotes, setQuoteT
   
   return (
     <SafeAreaView>
+      <TouchableOpacity
+        onPress={() => toggleDisplaySettings()}>
         <View style={styles.container} >
-          <Button 
-            title="SETTINGS"
-            onPress={() => toggleDisplaySettings()} />
           <View>
             <Text style={styles.headings} >QUOTE CHOICE</Text>
             <FlatList
@@ -56,6 +56,7 @@ const ButtonBar = ({whichPictures, toggleDisplaySettings, whichQuotes, setQuoteT
                   />
           </View>
         </View> 
+      </TouchableOpacity>
     </SafeAreaView>
   )
 };
@@ -63,6 +64,8 @@ const ButtonBar = ({whichPictures, toggleDisplaySettings, whichQuotes, setQuoteT
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
+    opacity: 0.8,
+    borderRadius: 5,
     width: '60%',
     padding: 10,
   },

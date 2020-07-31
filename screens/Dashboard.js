@@ -9,7 +9,7 @@ import HomeQuote from '../components/homeQuote';
 import ButtonBar from '../components/ButtonBar';
 const heartExplode = require('../animations/heartExplode.json');
 
-export default function Dashboard({ navigation, whichPictures, setQuoteType, quote, picture, setPictureType, storeData, whichQuotes, quoteType }) {
+export default function Dashboard({ navigation, whichPictures, setQuoteType, pictureType, quote, picture, setPictureType, storeData, whichQuotes, quoteType }) {
 
   const [displaySettings, setDisplaySettings] = useState(false);
 

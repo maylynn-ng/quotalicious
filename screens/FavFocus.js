@@ -86,12 +86,16 @@ const FavFocus = ({ route }) => {
               quote={parsed.quote}
               author={parsed.author} />
         </ImageBackground>
-        <Button 
-          title="SAVE"
-          onPress={downloadImage} />
-        <Button 
-          title="SHARE"
-          onPress={shareImage} />
+        <View style={styles.buttons}>
+          <Button 
+            style={styles.buttons}
+            title="SAVE"
+            onPress={downloadImage} />
+          <Button 
+            style={styles.buttons}
+            title="SHARE"
+            onPress={shareImage} />
+        </View>
       </View>
     </SafeAreaView>
   )
@@ -100,8 +104,12 @@ const FavFocus = ({ route }) => {
 const styles = StyleSheet.create({
   picture: {
     width: '100%',
-    height: '80%',
+    height: '90%',
     justifyContent: 'center',
+  },
+  buttons: {
+    margin: 5,
+    flexDirection: 'row',
   }
 })
 
