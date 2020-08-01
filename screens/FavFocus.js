@@ -3,11 +3,12 @@ import { SafeAreaView, Button, View, StyleSheet, ImageBackground, PermissionsAnd
 import { captureRef } from 'react-native-view-shot';
 import * as MediaLibrary from 'expo-media-library';
 import * as Sharing from 'expo-sharing';
+import { Entypo } from '@expo/vector-icons'; 
 
 import HomeQuote from '../components/homeQuote';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const FavFocus = ({ route }) => {
-  const item = route.params;
+const FavFocus = ({ item }) => {
   const parsed = JSON.parse(item[1]);
   const viewRef = useRef();
   
@@ -89,12 +90,20 @@ const FavFocus = ({ route }) => {
               </View>
         </ImageBackground>
         <View style={styles.buttons}>
-          <Button 
-            title="SAVE"
-            onPress={downloadImage} />
-          <Button 
-            title="SHARE"
-            onPress={shareImage} />
+          <TouchableOpacity 
+            onPress={downloadImage} >
+              <Entypo 
+                name="save" 
+                size={48} 
+                color="white" />
+            </TouchableOpacity>
+          <TouchableOpacity
+            onPress={shareImage} >
+              <Entypo 
+                name="share" 
+                size={48} 
+                color="white" />
+          </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>
@@ -116,13 +125,11 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     justifyContent: 'center',
   },
-  saveShare: {
-    backgroundColor: 'white',
-  },
   buttons: {
     marginTop: 0,
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
+
   },
   quote: {
     alignSelf: 'center',

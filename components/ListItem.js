@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Dimensions, View, Animated, ImageBackground, Button, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import GestureRecognizer from 'react-native-swipe-gestures';
+import Modal from 'react-native-modal';
+import { AntDesign } from '@expo/vector-icons'; 
 
+import FavFocus from '../screens/FavFocus';
 import HomeQuote from './homeQuote';
 
 const { height: wHeight } = Dimensions.get('window');
@@ -45,6 +48,7 @@ const ListItem = ({ navigation, y, index, quote, author, item, picture, removeFa
   //   outputRange: [0.5, 1, 1, 0.5],
   // })
 
+  const [displayFocus, setDisplayFocus] = useState(false);
 
   return (
     <Animated.View 
@@ -55,20 +59,33 @@ const ListItem = ({ navigation, y, index, quote, author, item, picture, removeFa
         <ImageBackground 
           style={styles.picture}
           source={picture} >
-          <GestureRecognizer
-            onSwipeLeft={() => removeFavorite((JSON.parse(item[0])).toString())}>
-            <View>
+          <TouchableOpacity 
+              onPress={() => removeFavorite((JSON.parse(item[0])).toString())} >
+              <AntDesign 
+                style={styles.deleteButton}
+                name="closecircle"
+                size={24}
+                color="black" />
+            </TouchableOpacity>
+          <View>
               <TouchableOpacity 
                 style={styles.quoteBox}
-                onPress={() => navigation.navigate('FavFocus', item)} >
+                onPress={() => setDisplayFocus(true)} >
                 <HomeQuote 
                   quote={quote}
                   author={author} />
               </TouchableOpacity>
             </View>
-          </GestureRecognizer>
-        </ImageBackground>
 
+        </ImageBackground>
+      <Modal
+        isVisible={displayFocus}
+        onBackdropPress={() => setDisplayFocus(false)}
+        animationIn='zoomInDown'
+        animationOut='zoomOutUp' >
+        <FavFocus 
+          item={item} />
+      </Modal>
       </View>
     </Animated.View>
   )
@@ -85,6 +102,11 @@ const styles = StyleSheet.create({
     width: '80%',
     margin: 20,
   },
+  deleteButton: {
+    width: 25,
+    borderRadius: 10,
+    backgroundColor: 'white',
+  },
   container: {
     width: '100%',
     marginTop: 10,
@@ -95,6 +117,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 15,
     margin: 0,
+    flexDirection: 'row',
   }
 })
 

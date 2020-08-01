@@ -1,13 +1,13 @@
 import React from 'react';
 import { StyleSheet, View, Text, ImageBackground, Button } from 'react-native';
 import GestureRecognizer from 'react-native-swipe-gestures';
-import LottieView from 'lottie-react-native';
-import { TapGestureHandler, State } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import Modal from 'react-native-modal';
+import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 
 import HomeQuote from '../components/homeQuote';
 import ButtonBar from '../components/ButtonBar';
-const heartExplode = require('../animations/heartExplode.json');
+
 
 export default function Dashboard({ navigation, setPicture, setQuote, whichPictures, setQuoteType, pictureType, quote, picture, setPictureType, storeData, whichQuotes, quoteType, setDisplayForm, setDisplaySettings, displayForm, displaySettings}) {
 
@@ -25,13 +25,18 @@ export default function Dashboard({ navigation, setPicture, setQuote, whichPictu
         onSwipeLeft={() => navigation.navigate('FavoriteList')}
         onSwipeRight={() => whichPictures(pictureType)}>
       <View> 
-
         <ImageBackground 
           style={styles.picture}
           source={{uri: picture}}>
-            {!displaySettings && <Button
-              title="SETTINGS"
-              onPress={() => {setDisplaySettings(true)}} />}
+          {!displaySettings && 
+            <TouchableOpacity 
+              onPress={() => setDisplaySettings(true)}>
+              <MaterialCommunityIcons 
+                style={styles.settingsIcon}
+                name="settings-box" 
+                size={56} 
+                color="black" />
+            </TouchableOpacity>}
               <Modal 
                 onBackdropPress={toggleDisplaySettings}
                 animationIn='zoomInUp'
@@ -59,6 +64,7 @@ export default function Dashboard({ navigation, setPicture, setQuote, whichPictu
                 {/* <TapGestureHandler
                     numberOfTaps={2} 
                     onHandlerStateChange={() => storeData()} > */}
+                 <View style={styles.quoteContainer}>
                   <GestureRecognizer 
                     onSwipeUp={() => whichQuotes(quoteType)}
                     >             
@@ -69,6 +75,7 @@ export default function Dashboard({ navigation, setPicture, setQuote, whichPictu
                         />
                     </View>
                   </GestureRecognizer>
+                </View>
                 {/* </TapGestureHandler> */}
               <Button
                 title="Save"
@@ -87,15 +94,20 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
     alignContent: 'center',
-    justifyContent: 'center',
   },
-  button: {
-    borderColor: 'black',
-    height: 50,
-    width: 50,
-    backgroundColor: 'orange',
+  settingsIcon: {
+    width: 55,
+    borderRadius: 10,
+    position: 'absolute',
+    top: 30,
+    left: 10,
   },
   quoteBox: {
     alignSelf: 'center',
+    margin: 20,
   },
+  quoteContainer: {
+    height: '100%',
+    justifyContent: 'center',
+  }
 });
