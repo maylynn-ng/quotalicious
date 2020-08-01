@@ -1,6 +1,7 @@
 import React from 'react';
-import { Dimensions, Animated, ImageBackground, Button, StyleSheet } from 'react-native';
+import { Dimensions, View, Animated, ImageBackground, Button, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import GestureRecognizer from 'react-native-swipe-gestures';
 
 import HomeQuote from './homeQuote';
 
@@ -49,32 +50,40 @@ const ListItem = ({ navigation, y, index, quote, author, item, picture, removeFa
     <Animated.View 
       // style={[styles.container, { opacity, transform: [{ translateY }, { scale }]}]}
       >
-      <ImageBackground 
-        style={styles.picture}
-        source={picture} >
-          <TouchableOpacity 
-            style={styles.quoteBox}
-            onPress={() => navigation.navigate('FavFocus', item)} >
-            <HomeQuote 
-              quote={quote}
-              author={author} />
-          </TouchableOpacity>
-          <Button 
-            title="UNLIKE"
-            onPress={() => removeFavorite((JSON.parse(item[0])).toString())} />
-      </ImageBackground>
+      <View style={styles.holder}>
+
+        <ImageBackground 
+          style={styles.picture}
+          source={picture} >
+          <GestureRecognizer
+            onSwipeLeft={() => removeFavorite((JSON.parse(item[0])).toString())}>
+            <View>
+              <TouchableOpacity 
+                style={styles.quoteBox}
+                onPress={() => navigation.navigate('FavFocus', item)} >
+                <HomeQuote 
+                  quote={quote}
+                  author={author} />
+              </TouchableOpacity>
+            </View>
+          </GestureRecognizer>
+        </ImageBackground>
+
+      </View>
     </Animated.View>
   )
 };
 
 const styles = StyleSheet.create({
   picture: {
-    width: '100%',
+    width: '95%',
     alignSelf: 'center',
+    margin: 0,
   },
   quoteBox: {
     alignSelf: 'center',
-    marginTop: 10,
+    width: '80%',
+    margin: 20,
   },
   container: {
     width: '100%',
@@ -82,6 +91,11 @@ const styles = StyleSheet.create({
     // marginVertical: MARGIN,
     alignSelf: 'center',
   },
+  holder: {
+    borderRadius: 5,
+    marginBottom: 15,
+    margin: 0,
+  }
 })
 
 export default ListItem;

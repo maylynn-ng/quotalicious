@@ -17,23 +17,29 @@ const FavoriteList = ({ navigation, favorites, removeFavorite }) => {
   return (
     <SafeAreaView>
       <Text style={styles.text} >Quotalicious</Text>
-      <AnimatedFlatList
-        scrollEventThrottle={16}
-        style={styles.list}
-        data={favorites}
-        keyExtractor={item => item[0]}
-        renderItem={({item, index}) => 
-          <ListItem
-            quote={JSON.parse(item[1]).quote}
-            author={JSON.parse(item[1]).author}
-            index={index}
-            item={item}
-            y={y}
-            navigation={navigation}
-            picture={{uri: (JSON.parse(item[1])).picture}}
-            removeFavorite={removeFavorite}/>}
-        {...{onScroll}}
-        />
+      {favorites.length ? 
+      <View style={styles.container}>
+        <AnimatedFlatList
+          scrollEventThrottle={16}
+          style={styles.list}
+          data={favorites}
+          keyExtractor={item => item[0]}
+          renderItem={({item, index}) => 
+            <ListItem
+              style={styles.item}
+              quote={JSON.parse(item[1]).quote}
+              author={JSON.parse(item[1]).author}
+              index={index}
+              item={item}
+              y={y}
+              navigation={navigation}
+              picture={{uri: (JSON.parse(item[1])).picture}}
+              removeFavorite={removeFavorite}/>}
+          {...{onScroll}}
+          />
+        </View>
+        : 
+        <Text>Mate, go like something</Text>}
     </SafeAreaView>
   )
 }
@@ -42,6 +48,18 @@ const styles = StyleSheet.create({
   list: {
     alignContent: 'center',
   },
+  text: {
+    textAlign: 'center',
+    fontSize: 32,
+    fontWeight: 'bold',
+    padding: 15,
+  },
+  container: {
+    padding: 15,
+  },
+  item: {
+    alignSelf: 'center',
+  }
 })
 
 export default FavoriteList;

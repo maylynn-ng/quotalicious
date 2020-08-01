@@ -16,11 +16,13 @@ const Stack = createStackNavigator();
 
 const App = () => {
   const [quote, setQuote] = useState({});
-  const [picture, setPicture] = useState();
+  const [picture, setPicture] = useState('');
   const [key, setKey] = useState('0');
   const [favorites, setFavorites] = useState([]);
   const [quoteType, setQuoteType] = useState('random');
   const [pictureType, setPictureType] = useState('random');
+  const [displaySettings, setDisplaySettings] = useState(false);
+  const [displayForm, setDisplayForm] = useState(false);
 
   const objToSave = {
     quote: quote.quote,
@@ -46,7 +48,6 @@ const App = () => {
       await AsyncStorage.setItem(key, jsonObj)
       setKey((key) => (+key + 1).toString())
       setFavorites(getSavedFavorites())
-      alert('saved it for you boo')
     } catch (error) {
       console.error('oh no something happened:', error);
     }
@@ -137,7 +138,6 @@ const App = () => {
     }
   };
 
-
   useEffect(() => {
     whichQuotes('random');
     getRandomPicture();
@@ -153,12 +153,18 @@ const App = () => {
               {(props) => <Dashboard
               whichQuotes={whichQuotes}
               quote={quote}
+              setQuote={setQuote}
               quoteType={quoteType}
               setQuoteType={setQuoteType}
               whichPictures={whichPictures}
               picture={picture}
+              setPicture={setPicture}
               pictureType={pictureType}
               setPictureType={setPictureType}
+              displayForm={displayForm}
+              displaySettings={displaySettings}
+              setDisplaySettings={setDisplaySettings}
+              setDisplayForm={setDisplayForm}
               storeData={storeData}
               {...props}
               />}
@@ -172,17 +178,6 @@ const App = () => {
               favorites={favorites}
               removeFavorite={removeFavorite}
               {...props} />}
-          </Stack.Screen>
-          <Stack.Screen
-            name="QuoteForm" >
-              {(props) => <QuoteForm
-                setQuote={setQuote}
-                quote={quote}
-                storeData={storeData}
-                setQuoteType={setQuoteType}
-                quoteType={quoteType}
-                {...props}
-                 />}
           </Stack.Screen>
           <Stack.Screen 
             name="FavFocus"

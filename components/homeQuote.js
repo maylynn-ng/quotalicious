@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   quoteBox: {
     backgroundColor: '#d4d4d4',
     width: '90%',
-    opacity: 0.7,
+    opacity: 0.87,
     paddingVertical: 30,
     paddingHorizontal: 40,
     borderRadius: 5,

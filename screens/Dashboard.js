@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, View, Text, ImageBackground, Button } from 'react-native';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import LottieView from 'lottie-react-native';
@@ -7,13 +7,9 @@ import Modal from 'react-native-modal';
 
 import HomeQuote from '../components/homeQuote';
 import ButtonBar from '../components/ButtonBar';
-import QuoteForm from '../components/QuoteForm';
 const heartExplode = require('../animations/heartExplode.json');
 
-export default function Dashboard({ navigation, whichPictures, setQuoteType, pictureType, quote, picture, setPictureType, storeData, whichQuotes, quoteType }) {
-
-  const [displaySettings, setDisplaySettings] = useState(false);
-  const [displayForm, setDisplayForm] = useState(false);
+export default function Dashboard({ navigation, setPicture, setQuote, whichPictures, setQuoteType, pictureType, quote, picture, setPictureType, storeData, whichQuotes, quoteType, setDisplayForm, setDisplaySettings, displayForm, displaySettings}) {
 
   const toggleDisplaySettings = () => {
     setDisplaySettings(prevState => !prevState)
@@ -35,42 +31,48 @@ export default function Dashboard({ navigation, whichPictures, setQuoteType, pic
           source={{uri: picture}}>
             {!displaySettings && <Button
               title="SETTINGS"
-              onPress={toggleDisplaySettings} />}
+              onPress={() => {setDisplaySettings(true)}} />}
               <Modal 
                 onBackdropPress={toggleDisplaySettings}
                 animationIn='zoomInUp'
                 animationOut='zoomOutDown'
                 isVisible={displaySettings}
-                 >
+                >
                 <ButtonBar 
-                  toggleDisplaySettings={toggleDisplaySettings}
+                  setDisplaySettings={setDisplaySettings}
+                  setDisplayForm={setDisplayForm}
+                  quote={quote}
+                  storeData={storeData}
+                  displayForm={displayForm}
                   toggleDisplayForm={toggleDisplayForm}
                   whichPictures={whichPictures} 
                   whichQuotes={whichQuotes} 
+                  setQuote={setQuote}
+                  setPicture={setPicture}
+                  quoteType={quoteType}
                   setQuoteType={setQuoteType} 
                   setPictureType={setPictureType} 
                   navigation={navigation}
                   />
               </Modal>
+              
                 {/* <TapGestureHandler
                     numberOfTaps={2} 
                     onHandlerStateChange={() => storeData()} > */}
                   <GestureRecognizer 
-                    onSwipeLeft={() => whichQuotes(quoteType)}>             
+                    onSwipeUp={() => whichQuotes(quoteType)}
+                    >             
                     <View style={styles.quoteBox} >
                       <HomeQuote 
                         quote={quote.quote}   
-                        author={quote.author} />
+                        author={quote.author} 
+                        />
                     </View>
                   </GestureRecognizer>
                 {/* </TapGestureHandler> */}
-              <Modal
-                onBackdropPress={toggleDisplayForm}
-                animationIn='bounceInUp'
-                animationOut='bounceOutDown'
-                isVisible={displayForm} >
-                <QuoteForm />
-              </Modal>
+              <Button
+                title="Save"
+                onPress={() => storeData()} />
         </ImageBackground>
 
       </View>

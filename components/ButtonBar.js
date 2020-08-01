@@ -1,11 +1,16 @@
-import React from 'react';
-import { View, Text, FlatList, SafeAreaView, StyleSheet, Button } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, FlatList, StyleSheet, Button } from 'react-native';
+import Modal from 'react-native-modal';
+import * as ImagePicker from 'expo-image-picker';
+import Constants from 'expo-constants';
+import * as Permissions from 'expo-permissions';
 
+import QuoteForm from './QuoteForm';
 import { QuoteButton, PictureButton } from '../elements/buttons';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { NavigationContainer } from '@react-navigation/native';
 
-const ButtonBar = ({navigation, whichPictures, toggleDisplayForm, toggleDisplaySettings, whichQuotes, setQuoteType, setPictureType}) => {
+const ButtonBar = ({whichPictures, displayForm, setDisplayForm, setDisplaySettings, whichQuotes, setPicture, setQuote, setQuoteType, setPictureType}) => {
+
+  let isSettingsVisible = true;
 
   const IMAGE_CHOICE = [
     { buttonName: 'Random',
@@ -24,15 +29,45 @@ const ButtonBar = ({navigation, whichPictures, toggleDisplayForm, toggleDisplayS
       buttonType: 'trump'},
     { buttonName: 'Taylor Swift',
       buttonType: 'taylor'}];
-  
+
+  const _pickImage = async () => {
+    try { 
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1
+      });
+      if (!result.cancelled) {
+        setPicture(result.uri)
+      }
+    } catch (error) {
+      console.error('error in picking Image: ', error)
+    }
+  }
+
   return (
-    <SafeAreaView>
+    <View>
+      <Modal
+        style={styles.quoteForm}
+        onBackdropPress={() => setDisplayForm(false)}
+        animationIn='bounceInUp'
+        animationOut='bounceOutDown'
+        isVisible={displayForm} 
+        >
+          <QuoteForm
+          setQuote={setQuote}
+          displayForm={displayForm}
+          setDisplaySettings={setDisplaySettings}
+          setDisplayForm={setDisplayForm} />
+        </Modal>
+      {isSettingsVisible &&
       <View style={styles.container} >
         <View>
           <Text style={styles.headings} >QUOTE CHOICE</Text>
           <FlatList
             data={QUOTE_CHOICE}
-            keyExtractor={(item) => item.index}
+            keyExtractor={(item) => item.buttonType}
             renderItem={
               ({item}) => <QuoteButton 
               buttonName={item.buttonName}
@@ -45,7 +80,7 @@ const ButtonBar = ({navigation, whichPictures, toggleDisplayForm, toggleDisplayS
           <Text style={styles.headings} >IMAGE CHOICE</Text>
           <FlatList
             data={IMAGE_CHOICE}
-            keyExtractor={(item) => item.index}
+            keyExtractor={(item) => item.buttonType}
             renderItem={
               ({item}) => <PictureButton 
                 buttonName={item.buttonName}
@@ -59,11 +94,14 @@ const ButtonBar = ({navigation, whichPictures, toggleDisplayForm, toggleDisplayS
             <Button
               title="Quote"
               onPress={() => {
-                toggleDisplayForm()
-                toggleDisplaySettings()}} />
+                setDisplayForm(true);
+                isSettingsVisible = false;}} />
+            <Button
+              title="Image"
+              onPress={() => _pickImage()} />
         </View>
-      </View> 
-    </SafeAreaView>
+        </View> }
+    </View>
   )
 };
 
@@ -81,6 +119,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontSize: 20,
     fontWeight: 'bold',
+  },
+  quoteForm: {
+    marginTop: -200,
   }
 })
 

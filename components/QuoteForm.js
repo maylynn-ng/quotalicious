@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { TextInput, View, StyleSheet, SafeAreaView } from 'react-native';
+import { Button, TextInput, View, StyleSheet, SafeAreaView } from 'react-native';
 
 import HomeQuote from './homeQuote';
 
-const QuoteForm = ({setQuote, quote, storeData}) => {
+const QuoteForm = ({ setQuote, setDisplaySettings, setDisplayForm }) => {
 
   const [customQuote, setCustomQuote] = useState('');
-  const [customAuthor, setCustomAuthor] = useState('');
+  const [customAuthor, setCustomAuthor] = useState('Author McAuthorFace');
 
   let objToSave = {};
 
@@ -16,7 +16,9 @@ const QuoteForm = ({setQuote, quote, storeData}) => {
       author: customAuthor
     };
     setCustomQuote(input);
-    setQuote(objToSave);
+    if (input) {
+      setQuote(objToSave);
+    }
   }
   const authorInputHandler = (input) => {
     objToSave = {
@@ -24,12 +26,19 @@ const QuoteForm = ({setQuote, quote, storeData}) => {
       author: input
     };
     setCustomAuthor(input);
-    setQuote(objToSave);
+    if (input) {
+      setQuote(objToSave);
+    }
   }
 
-  const submitHandler = () => {
-    storeData(objToSave);
-    TextInput.clear();
+  const submitHandler = (input) => {
+    if (input) {
+      setCustomQuote('');
+      setCustomAuthor('');
+    }
+    setDisplayForm(false);
+    setDisplaySettings(false);
+    setCustomQuote('');
   }
 
   return (
@@ -46,17 +55,24 @@ const QuoteForm = ({setQuote, quote, storeData}) => {
           autoCapitalize="sentences"
           multiline={true}
           onChangeText={text => quoteInputHandler(text)}
-          onSubmitEditing={() => {submitHandler()}}
+          returnKeyLabel='done'
+          value={customQuote}
           />
         <TextInput
           style={styles.textInput}
-          placeholder="Your Author"
           enablesReturnKeyAutomatically={true}
-          autoCapitalize="sentences"
+          onFocus={() => setCustomAuthor('')}
+          placeholder="Your author"
+          autoCapitalize="words"
           multiline={true}
           onChangeText={text => authorInputHandler(text)}
-          onSubmitEditing={() => {submitHandler()}}
+          returnKeyLabel='done'
+          value={customAuthor}
           />
+        <Button
+          style={styles.inspire}
+          title="Inspire"
+          onPress={() => {submitHandler(objToSave);}} />
       </View>
     </SafeAreaView>
   )
@@ -67,6 +83,9 @@ const styles = StyleSheet.create({
     padding: 20,
     alignItems: 'center',
     width: '100%',
+    backgroundColor: 'white',
+    borderRadius: 5,
+    opacity: 0.95,
   },
   textInput: {
     marginTop: 20,
@@ -78,6 +97,9 @@ const styles = StyleSheet.create({
   quoteBox: {
     width: '100%',
     alignSelf: 'center',
+  },
+  inspire: {
+    marginTop: 10,
   }
 })
 
