@@ -13,10 +13,10 @@ const HomeQuote = ({quote, author}) => {
 const styles = StyleSheet.create({
   quoteBox: {
     backgroundColor: '#d4d4d4',
+    width: '90%',
     opacity: 0.7,
-    margin: 10,
-    paddingVertical: 20,
-    paddingHorizontal: 30,
+    paddingVertical: 30,
+    paddingHorizontal: 40,
     borderRadius: 5,
   },
 

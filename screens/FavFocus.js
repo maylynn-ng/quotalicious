@@ -77,22 +77,22 @@ const FavFocus = ({ route }) => {
 
   return (
     <SafeAreaView>
-      <View >
+      <View style={styles.container} >
         <ImageBackground
           ref={viewRef}
           style={styles.picture}
           source={{uri: parsed.picture}} >
-            <HomeQuote
-              quote={parsed.quote}
-              author={parsed.author} />
+            <View style={styles.quote} >
+              <HomeQuote
+                quote={parsed.quote}
+                author={parsed.author} />
+              </View>
         </ImageBackground>
         <View style={styles.buttons}>
           <Button 
-            style={styles.buttons}
             title="SAVE"
             onPress={downloadImage} />
           <Button 
-            style={styles.buttons}
             title="SHARE"
             onPress={shareImage} />
         </View>
@@ -106,10 +106,26 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '90%',
     justifyContent: 'center',
+    alignContent: 'center',
+    marginBottom: 0,
+  },
+  container: {
+    height: '100%',
+    width: '100%',
+    padding: 20,
+    alignContent: 'center',
+    justifyContent: 'center',
+  },
+  saveShare: {
+    backgroundColor: 'white',
   },
   buttons: {
-    margin: 5,
+    marginTop: 0,
     flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  quote: {
+    alignSelf: 'center',
   }
 })
 

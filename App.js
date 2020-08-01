@@ -9,6 +9,7 @@ import Dashboard from './screens/Dashboard';
 import FavoriteList from './screens/favoriteList';
 import FavFocus from './screens/FavFocus';
 import ButtonBar from './components/ButtonBar';
+import QuoteForm from './components/QuoteForm';
 import { randomQuote, randomPicture, getKanye, getTaylor, getDonald, pictureBW, pictureBlur } from './ApiClientService';
 
 const Stack = createStackNavigator();
@@ -55,7 +56,6 @@ const App = () => {
     try {
       await AsyncStorage.removeItem(unlike)
       getSavedFavorites();
-      alert("IT'S GONE MUTHAFUCKAAAAAAAAAAA");
     } catch (error) {
       console.error('no I dunnae think so', error);
     }
@@ -167,11 +167,22 @@ const App = () => {
             name="SectionList"
             component={ButtonBar} />
           <Stack.Screen
-            name="FavoriteList"> 
+            name="FavoriteList" > 
               {(props) => <FavoriteList
               favorites={favorites}
               removeFavorite={removeFavorite}
               {...props} />}
+          </Stack.Screen>
+          <Stack.Screen
+            name="QuoteForm" >
+              {(props) => <QuoteForm
+                setQuote={setQuote}
+                quote={quote}
+                storeData={storeData}
+                setQuoteType={setQuoteType}
+                quoteType={quoteType}
+                {...props}
+                 />}
           </Stack.Screen>
           <Stack.Screen 
             name="FavFocus"

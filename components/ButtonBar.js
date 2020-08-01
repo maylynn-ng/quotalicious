@@ -3,8 +3,9 @@ import { View, Text, FlatList, SafeAreaView, StyleSheet, Button } from 'react-na
 
 import { QuoteButton, PictureButton } from '../elements/buttons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { NavigationContainer } from '@react-navigation/native';
 
-const ButtonBar = ({whichPictures, toggleDisplaySettings, whichQuotes, setQuoteType, setPictureType}) => {
+const ButtonBar = ({navigation, whichPictures, toggleDisplaySettings, whichQuotes, setQuoteType, setPictureType}) => {
 
   const IMAGE_CHOICE = [
     { buttonName: 'Random',
@@ -26,37 +27,42 @@ const ButtonBar = ({whichPictures, toggleDisplaySettings, whichQuotes, setQuoteT
   
   return (
     <SafeAreaView>
-      <TouchableOpacity
-        onPress={() => toggleDisplaySettings()}>
-        <View style={styles.container} >
-          <View>
-            <Text style={styles.headings} >QUOTE CHOICE</Text>
-            <FlatList
-              data={QUOTE_CHOICE}
-              keyExtractor={(item) => item.index}
-              renderItem={
-                ({item}) => <QuoteButton 
+      <View style={styles.container} >
+        <View>
+          <Text style={styles.headings} >QUOTE CHOICE</Text>
+          <FlatList
+            data={QUOTE_CHOICE}
+            keyExtractor={(item) => item.index}
+            renderItem={
+              ({item}) => <QuoteButton 
+              buttonName={item.buttonName}
+              typeName={item.buttonType}
+              setQuoteType={setQuoteType}
+              whichQuotes={whichQuotes} />}
+              />
+        </View>
+        <View>
+          <Text style={styles.headings} >IMAGE CHOICE</Text>
+          <FlatList
+            data={IMAGE_CHOICE}
+            keyExtractor={(item) => item.index}
+            renderItem={
+              ({item}) => <PictureButton 
                 buttonName={item.buttonName}
                 typeName={item.buttonType}
-                setQuoteType={setQuoteType}
-                whichQuotes={whichQuotes} />}
+                setPictureType={setPictureType}
+                whichPictures={whichPictures} />}
                 />
-          </View>
-          <View>
-            <Text style={styles.headings} >IMAGE CHOICE</Text>
-            <FlatList
-              data={IMAGE_CHOICE}
-              keyExtractor={(item) => item.index}
-              renderItem={
-                ({item}) => <PictureButton 
-                  buttonName={item.buttonName}
-                  typeName={item.buttonType}
-                  setPictureType={setPictureType}
-                  whichPictures={whichPictures} />}
-                  />
-          </View>
-        </View> 
-      </TouchableOpacity>
+        </View>
+        <View>
+          <Text style={styles.headings} >CUSTOMIZE</Text>
+            <Button
+              title="Quote"
+              onPress={() => {
+                navigation.navigate('QuoteForm')
+                toggleDisplaySettings()}} />
+        </View>
+      </View> 
     </SafeAreaView>
   )
 };
