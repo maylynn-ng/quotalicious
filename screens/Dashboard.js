@@ -7,14 +7,20 @@ import Modal from 'react-native-modal';
 
 import HomeQuote from '../components/homeQuote';
 import ButtonBar from '../components/ButtonBar';
+import QuoteForm from '../components/QuoteForm';
 const heartExplode = require('../animations/heartExplode.json');
 
 export default function Dashboard({ navigation, whichPictures, setQuoteType, pictureType, quote, picture, setPictureType, storeData, whichQuotes, quoteType }) {
 
   const [displaySettings, setDisplaySettings] = useState(false);
+  const [displayForm, setDisplayForm] = useState(false);
 
   const toggleDisplaySettings = () => {
     setDisplaySettings(prevState => !prevState)
+  }
+
+  const toggleDisplayForm = () => {
+    setDisplayForm(prevState => !prevState)
   }
 
   return (
@@ -38,6 +44,7 @@ export default function Dashboard({ navigation, whichPictures, setQuoteType, pic
                  >
                 <ButtonBar 
                   toggleDisplaySettings={toggleDisplaySettings}
+                  toggleDisplayForm={toggleDisplayForm}
                   whichPictures={whichPictures} 
                   whichQuotes={whichQuotes} 
                   setQuoteType={setQuoteType} 
@@ -45,9 +52,9 @@ export default function Dashboard({ navigation, whichPictures, setQuoteType, pic
                   navigation={navigation}
                   />
               </Modal>
-                <TapGestureHandler
+                {/* <TapGestureHandler
                     numberOfTaps={2} 
-                    onHandlerStateChange={() => storeData()} >
+                    onHandlerStateChange={() => storeData()} > */}
                   <GestureRecognizer 
                     onSwipeLeft={() => whichQuotes(quoteType)}>             
                     <View style={styles.quoteBox} >
@@ -56,7 +63,14 @@ export default function Dashboard({ navigation, whichPictures, setQuoteType, pic
                         author={quote.author} />
                     </View>
                   </GestureRecognizer>
-                </TapGestureHandler>
+                {/* </TapGestureHandler> */}
+              <Modal
+                onBackdropPress={toggleDisplayForm}
+                animationIn='bounceInUp'
+                animationOut='bounceOutDown'
+                isVisible={displayForm} >
+                <QuoteForm />
+              </Modal>
         </ImageBackground>
 
       </View>

@@ -5,7 +5,7 @@ import { QuoteButton, PictureButton } from '../elements/buttons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 
-const ButtonBar = ({navigation, whichPictures, toggleDisplaySettings, whichQuotes, setQuoteType, setPictureType}) => {
+const ButtonBar = ({navigation, whichPictures, toggleDisplayForm, toggleDisplaySettings, whichQuotes, setQuoteType, setPictureType}) => {
 
   const IMAGE_CHOICE = [
     { buttonName: 'Random',
@@ -59,7 +59,7 @@ const ButtonBar = ({navigation, whichPictures, toggleDisplaySettings, whichQuote
             <Button
               title="Quote"
               onPress={() => {
-                navigation.navigate('QuoteForm')
+                toggleDisplayForm()
                 toggleDisplaySettings()}} />
         </View>
       </View> 

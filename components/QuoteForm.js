@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { TextInput, Text, View, StyleSheet, SafeAreaView } from 'react-native';
+import { TextInput, View, StyleSheet, SafeAreaView } from 'react-native';
 
 import HomeQuote from './homeQuote';
 
-const QuoteForm = ({setQuote, quote, storeData, setQuoteType, quoteType}) => {
+const QuoteForm = ({setQuote, quote, storeData}) => {
 
   const [customQuote, setCustomQuote] = useState('');
   const [customAuthor, setCustomAuthor] = useState('');
@@ -17,7 +17,6 @@ const QuoteForm = ({setQuote, quote, storeData, setQuoteType, quoteType}) => {
     };
     setCustomQuote(input);
     setQuote(objToSave);
-    console.log('quote',quote)
   }
   const authorInputHandler = (input) => {
     objToSave = {
@@ -26,7 +25,6 @@ const QuoteForm = ({setQuote, quote, storeData, setQuoteType, quoteType}) => {
     };
     setCustomAuthor(input);
     setQuote(objToSave);
-    console.log('auth',quote)
   }
 
   const submitHandler = () => {
@@ -40,7 +38,7 @@ const QuoteForm = ({setQuote, quote, storeData, setQuoteType, quoteType}) => {
         <HomeQuote 
           style={styles.quoteBox}
           quote={customQuote}   
-          author={quote.author}/>
+          author={customAuthor}/>
         <TextInput
           style={styles.textInput}
           placeholder="Your quote"
@@ -66,8 +64,8 @@ const QuoteForm = ({setQuote, quote, storeData, setQuoteType, quoteType}) => {
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: 'center',
-    alignContent: 'center',
+    padding: 20,
+    alignItems: 'center',
     width: '100%',
   },
   textInput: {
@@ -75,6 +73,7 @@ const styles = StyleSheet.create({
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
+    width: '80%',
   },
   quoteBox: {
     width: '100%',
