@@ -1,15 +1,38 @@
-import React from 'react';
-import { StyleSheet, View, Text, ImageBackground, Button } from 'react-native';
+import React, { useRef } from 'react';
+import { StyleSheet, View, ImageBackground } from 'react-native';
+import Modal from 'react-native-modal';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import Modal from 'react-native-modal';
-import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 
+// COMPONENTS
 import HomeQuote from '../components/homeQuote';
 import ButtonBar from '../components/ButtonBar';
 
+// ANIMATIONS
+import LottieView from 'lottie-react-native';
+import heartBookmark from '../animations/heartBookmark.json'
+import confetti from '../animations/confetti.json';
+import settings from '../animations/settings.json';
+import heartExplode from '../animations/heartExplode.json';
 
-export default function Dashboard({ navigation, setPicture, setQuote, whichPictures, setQuoteType, pictureType, quote, picture, setPictureType, storeData, whichQuotes, quoteType, setDisplayForm, setDisplaySettings, displayForm, displaySettings}) {
+
+export default function Dashboard({ navigation, removeFavorite, setPicture, setQuote, whichPictures, setQuoteType, pictureType, quote, picture, setPictureType, storeData, whichQuotes, quoteType, setDisplayForm, setDisplaySettings, displayForm, displaySettings}) {
+
+
+  const confettiAnimation = useRef(null);
+  const bookmarkAnimation = useRef(null);
+  const settingsAnimation = useRef(null);
+  const heartExplodeAnimation = useRef(null);
+
+  const likeAnimation = () => {
+    confettiAnimation.current.play();
+    bookmarkAnimation.current.play();
+    heartExplodeAnimation.current.play();
+  }
+
+  const playSettings = () => {
+    settingsAnimation.current.play();
+  }
 
   const toggleDisplaySettings = () => {
     setDisplaySettings(prevState => !prevState)
@@ -28,60 +51,83 @@ export default function Dashboard({ navigation, setPicture, setQuote, whichPictu
         <ImageBackground 
           style={styles.picture}
           source={{uri: picture}}>
-          {!displaySettings && 
-            <TouchableOpacity 
-              onPress={() => setDisplaySettings(true)}>
-              <MaterialCommunityIcons 
-                style={styles.settingsIcon}
-                name="settings-box" 
-                size={56} 
-                color="black" />
-            </TouchableOpacity>}
-              <Modal 
-                onBackdropPress={toggleDisplaySettings}
-                animationIn='zoomInUp'
-                animationOut='zoomOutDown'
-                isVisible={displaySettings}
-                >
-                <ButtonBar 
-                  setDisplaySettings={setDisplaySettings}
-                  setDisplayForm={setDisplayForm}
-                  quote={quote}
-                  storeData={storeData}
-                  displayForm={displayForm}
-                  toggleDisplayForm={toggleDisplayForm}
-                  whichPictures={whichPictures} 
-                  whichQuotes={whichQuotes} 
-                  setQuote={setQuote}
-                  setPicture={setPicture}
-                  quoteType={quoteType}
-                  setQuoteType={setQuoteType} 
-                  setPictureType={setPictureType} 
-                  navigation={navigation}
-                  />
-              </Modal>
-              
-                {/* <TapGestureHandler
-                    numberOfTaps={2} 
-                    onHandlerStateChange={() => storeData()} > */}
-                 <View style={styles.quoteContainer}>
-                  <GestureRecognizer 
-                    onSwipeUp={() => whichQuotes(quoteType)}
-                    >             
-                    <View style={styles.quoteBox} >
-                      <HomeQuote 
-                        quote={quote.quote}   
-                        author={quote.author} 
-                        />
-                    </View>
-                  </GestureRecognizer>
-                </View>
-                {/* </TapGestureHandler> */}
-              <Button
-                title="Save"
-                onPress={() => storeData()} />
-        </ImageBackground>
+          <Modal 
+            onBackdropPress={toggleDisplaySettings}
+            animationIn='slideInLeft'
+            animationOut='slideOutLeft'
+            isVisible={displaySettings}
+            >
+            <ButtonBar 
+              setDisplaySettings={setDisplaySettings}
+              setDisplayForm={setDisplayForm}
+              quote={quote}
+              storeData={storeData}
+              displayForm={displayForm}
+              toggleDisplayForm={toggleDisplayForm}
+              whichPictures={whichPictures} 
+              whichQuotes={whichQuotes} 
+              setQuote={setQuote}
+              setPicture={setPicture}
+              quoteType={quoteType}
+              setQuoteType={setQuoteType} 
+              setPictureType={setPictureType} 
+              navigation={navigation}
+              />
+          </Modal>
 
+          <View style={styles.quoteContainer}>
+          <TouchableOpacity
+            onPress={() => {
+              setDisplaySettings(true);
+              playSettings();
+            }} >
+              <View style={styles.settingsArea}>
+              <LottieView
+                style={styles.settings}
+                ref={settingsAnimation}
+                progress={1}
+                loop={false}
+                source={settings} />
+              </View>
+          </TouchableOpacity>
+
+          <GestureRecognizer 
+            onSwipeUp={() => whichQuotes(quoteType)}
+            >             
+            <View style={styles.quoteBox} >
+            <LottieView
+              style={styles.bookmark}
+              ref={bookmarkAnimation}
+              autoPlay={false}
+              loop={false}
+              source={heartBookmark} />
+              <HomeQuote 
+                removeFavorite={removeFavorite}
+                storeData={storeData}
+                quote={quote.quote}   
+                author={quote.author} 
+                />
+            </View>
+            <LottieView
+              ref={confettiAnimation}
+              autoPlay={false}
+              loop={false}
+              source={confetti} />
+          </GestureRecognizer>
+          <TouchableOpacity
+            onPress={() => {
+              storeData();
+              likeAnimation();
+            }}>
+            <LottieView
+              style={styles.heartExplode}
+              ref={heartExplodeAnimation}
+              progress={1}
+              loop={false}
+              source={heartExplode} />
+          </TouchableOpacity>
+            </View>
+        </ImageBackground>
       </View>
       </GestureRecognizer>
     </View>
@@ -95,19 +141,39 @@ const styles = StyleSheet.create({
     width: '100%',
     alignContent: 'center',
   },
-  settingsIcon: {
-    width: 55,
-    borderRadius: 10,
-    position: 'absolute',
-    top: 30,
-    left: 10,
-  },
   quoteBox: {
     alignSelf: 'center',
     margin: 20,
+    marginTop: 60,
   },
   quoteContainer: {
     height: '100%',
+    marginTop: -100,
     justifyContent: 'center',
+  },
+  bookmark: {
+    zIndex: 10,
+    width: 100,
+    alignSelf: 'flex-end',
+    marginRight: 0,
+    marginTop: 36,
+  },
+  heartExplode: {
+    width: 100,
+    alignSelf: 'center',
+  },
+  confetti: {
+    width: 400,
+  },
+  settings: {
+    width: 200,
+    marginTop: 10,
+  },
+  settingsArea: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 40,
+    width: 100,
+
   }
 });

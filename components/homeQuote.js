@@ -1,19 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { AntDesign } from '@expo/vector-icons'; 
 
-const HomeQuote = ({quote, author}) => {
+const HomeQuote = ({quote, storeData, removeFavorite, author}) => {
+
+  const [isLiked, setIsLiked] = useState(false);
+  // const item = 
+  
+  // (JSON.parse(item[0])).toString()
+
   return (
     <View style={styles.quoteBox}> 
       <View>
         <Text style={styles.quote}>"{quote}"</Text>
         <Text style={styles.author}>-{author}</Text>
       </View>
-      <AntDesign 
-        style={styles.likeIcon}
-        name="hearto" 
-        size={36} 
-        color="black" />
+
+        {/* <TouchableOpacity 
+          onPress={() => {
+            if (!isLiked) {
+              storeData();
+              setIsLiked(true)}
+            else {
+              // removeFavorite();
+              setIsLiked(false)}
+          }}>
+        {!isLiked
+          ? <AntDesign 
+            style={styles.likeIcon}
+            name="hearto" 
+            size={36} 
+            color="black" />
+            : <AntDesign 
+                style={styles.likeIcon}
+                name="heart" 
+                size={36} 
+                color="black" />} */}
+
+        {/* </TouchableOpacity> */}
     </View>
   )
 }

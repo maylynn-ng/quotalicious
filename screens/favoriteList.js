@@ -1,45 +1,48 @@
-import React from 'react';
-import { SafeAreaView, Dimensions, Animated, Button, Text, View, FlatList, ImageBackground, StyleSheet } from 'react-native';
+import React, { useRef } from 'react';
+import { SafeAreaView, Text, View, FlatList, StyleSheet } from 'react-native';
 import ListItem from '../components/ListItem';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
-
-
-const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
-const y = new Animated.Value(0);
-const onScroll = Animated.event([{
-  nativeEvent: { contentOffset: {y} }}], 
-  { useNativeDriver: true })
-
+// ANIMATIONS
+import LottieView from 'lottie-react-native';
+import meerkat from '../animations/meerkat.json';
 
 const FavoriteList = ({ navigation, favorites, removeFavorite }) => {
+
+  const meerkatAnimation = useRef(null);
 
   return (
     <SafeAreaView>
       <Text style={styles.text} >Quotalicious</Text>
       {favorites.length ? 
       <View style={styles.container}>
-        <AnimatedFlatList
+        <FlatList
           scrollEventThrottle={16}
           style={styles.list}
           data={favorites}
           keyExtractor={item => item[0]}
           renderItem={({item, index}) => 
             <ListItem
+              item={item}
               style={styles.item}
               quote={JSON.parse(item[1]).quote}
               author={JSON.parse(item[1]).author}
-              index={index}
-              item={item}
-              y={y}
               navigation={navigation}
               picture={{uri: (JSON.parse(item[1])).picture}}
               removeFavorite={removeFavorite}/>}
-          {...{onScroll}}
           />
         </View>
         : 
-        <Text>Mate, go like something</Text>}
+        <View>
+          <LottieView
+            style={styles.meerkat}
+            ref={meerkatAnimation}
+            autoPlay={true}
+            loop={true}
+            source={meerkat} />
+          <Text style={styles.emptyText}>
+            Where Da Likes At??
+          </Text>
+        </View>}
     </SafeAreaView>
   )
 }
@@ -59,6 +62,15 @@ const styles = StyleSheet.create({
   },
   item: {
     alignSelf: 'center',
+  },
+  meerkat: {
+    width: 300,
+    alignSelf: 'center',
+  },
+  emptyText: {
+    textAlign: 'center', 
+    fontSize: 32,
+    fontWeight: 'bold',
   }
 })
 

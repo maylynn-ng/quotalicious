@@ -61,6 +61,7 @@ const ButtonBar = ({whichPictures, displayForm, setDisplayForm, setDisplaySettin
           setDisplaySettings={setDisplaySettings}
           setDisplayForm={setDisplayForm} />
         </Modal>
+
       {isSettingsVisible &&
       <View style={styles.container} >
         <View>
@@ -100,7 +101,7 @@ const ButtonBar = ({whichPictures, displayForm, setDisplayForm, setDisplaySettin
               title="Image"
               onPress={() => _pickImage()} />
         </View>
-        </View> }
+      </View> }
     </View>
   )
 };

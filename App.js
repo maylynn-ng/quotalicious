@@ -166,6 +166,7 @@ const App = () => {
               setDisplaySettings={setDisplaySettings}
               setDisplayForm={setDisplayForm}
               storeData={storeData}
+              removeFavorite={removeFavorite}
               {...props}
               />}
           </Stack.Screen>
