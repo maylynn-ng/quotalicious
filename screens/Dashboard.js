@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
-import { StyleSheet, View, ImageBackground } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { StyleSheet, View, ImageBackground, SafeAreaView } from 'react-native';
 import Modal from 'react-native-modal';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -17,14 +17,14 @@ import heartExplode from '../animations/heartExplode.json';
 
 
 export default function Dashboard({ navigation, removeFavorite, setPicture, setQuote, whichPictures, setQuoteType, pictureType, quote, picture, setPictureType, storeData, whichQuotes, quoteType, setDisplayForm, setDisplaySettings, displayForm, displaySettings}) {
-
-
+  const [displayConfetti, setDisplayConfetti] = useState(false);
   const confettiAnimation = useRef(null);
   const bookmarkAnimation = useRef(null);
   const settingsAnimation = useRef(null);
   const heartExplodeAnimation = useRef(null);
 
-  const likeAnimation = () => {
+  const likeAnimation = async () => {
+    await setDisplayConfetti(true)
     confettiAnimation.current.play();
     bookmarkAnimation.current.play();
     heartExplodeAnimation.current.play();
@@ -43,11 +43,12 @@ export default function Dashboard({ navigation, removeFavorite, setPicture, setQ
   }
 
   return (
+    <SafeAreaView>
     <View>
       <GestureRecognizer
         onSwipeLeft={() => navigation.navigate('FavoriteList')}
         onSwipeRight={() => whichPictures(pictureType)}>
-      <View> 
+      <View style={styles.container}> 
         <ImageBackground 
           style={styles.picture}
           source={{uri: picture}}>
@@ -82,43 +83,39 @@ export default function Dashboard({ navigation, removeFavorite, setPicture, setQ
               playSettings();
             }} >
               <View style={styles.settingsArea}>
-              <LottieView
-                style={styles.settings}
-                ref={settingsAnimation}
-                progress={1}
-                loop={false}
-                source={settings} />
+                <LottieView
+                  style={styles.settings}
+                  ref={settingsAnimation}
+                  progress={1}
+                  loop={false}
+                  source={settings} />
               </View>
           </TouchableOpacity>
-
           <GestureRecognizer 
-            onSwipeUp={() => whichQuotes(quoteType)}
-            >             
+            onSwipeUp={() => whichQuotes(quoteType)}>             
             <View style={styles.quoteBox} >
-            <LottieView
-              style={styles.bookmark}
-              ref={bookmarkAnimation}
-              autoPlay={false}
-              loop={false}
-              source={heartBookmark} />
-              <HomeQuote 
-                removeFavorite={removeFavorite}
-                storeData={storeData}
-                quote={quote.quote}   
-                author={quote.author} 
-                />
+              <LottieView
+                style={styles.bookmark}
+                ref={bookmarkAnimation}
+                autoPlay={false}
+                loop={false}
+                source={heartBookmark} />
+                <HomeQuote 
+                  removeFavorite={removeFavorite}
+                  storeData={storeData}
+                  quote={quote.quote}   
+                  author={quote.author} />
             </View>
-            <LottieView
+            {displayConfetti && <LottieView
               ref={confettiAnimation}
               autoPlay={false}
               loop={false}
-              source={confetti} />
+              source={confetti} />}
           </GestureRecognizer>
           <TouchableOpacity
             onPress={() => {
               storeData();
-              likeAnimation();
-            }}>
+              likeAnimation();}}>
             <LottieView
               style={styles.heartExplode}
               ref={heartExplodeAnimation}
@@ -126,16 +123,21 @@ export default function Dashboard({ navigation, removeFavorite, setPicture, setQ
               loop={false}
               source={heartExplode} />
           </TouchableOpacity>
-            </View>
+          </View>
         </ImageBackground>
       </View>
       </GestureRecognizer>
     </View>
+    </SafeAreaView>
   );
 };
 
 
 const styles = StyleSheet.create({
+  container: {
+    borderRadius: 5,
+    padding: 10,
+  },  
   picture: {
     height: '100%',
     width: '100%',
@@ -159,21 +161,20 @@ const styles = StyleSheet.create({
     marginTop: 36,
   },
   heartExplode: {
-    width: 100,
+    width: 60,
     alignSelf: 'center',
   },
   confetti: {
     width: 400,
   },
   settings: {
-    width: 200,
-    marginTop: 10,
+    width: 150,
   },
   settingsArea: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 40,
     width: 100,
-
+    height: 100,
+    top: 50,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
   }
 });

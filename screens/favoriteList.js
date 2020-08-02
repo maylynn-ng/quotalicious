@@ -16,11 +16,10 @@ const FavoriteList = ({ navigation, favorites, removeFavorite }) => {
       {favorites.length ? 
       <View style={styles.container}>
         <FlatList
-          scrollEventThrottle={16}
           style={styles.list}
           data={favorites}
           keyExtractor={item => item[0]}
-          renderItem={({item, index}) => 
+          renderItem={({item}) => 
             <ListItem
               item={item}
               style={styles.item}
