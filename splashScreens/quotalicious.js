@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { SafeAreaView, View, Text, StyleSheet, Animated } from 'react-native';
+import { SafeAreaView, View, Text, StyleSheet } from 'react-native';
 import LottieView from 'lottie-react-native';
 
 import lickingLips from '../animations/lickingLips.json';

@@ -177,8 +177,6 @@ const App = () => {
               isLiked={isLiked}
               setIsLiked={setIsLiked}
               myKey={key}
-              displayQuotalicious={displayQuotalicious}
-              setDisplayQuotalicious={setDisplayQuotalicious}
               {...props}
               />}
           </Stack.Screen>
