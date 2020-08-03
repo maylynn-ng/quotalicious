@@ -10,6 +10,7 @@ import FavoriteList from './screens/favoriteList';
 import FavFocus from './screens/FavFocus';
 import ButtonBar from './components/ButtonBar';
 import RickRoll from './screens/RICKROLL';
+import Quotalicious from './splashScreens/quotalicious';
 import { randomQuote, randomPicture, getKanye, getTaylor, getDonald, pictureBW, pictureBlur } from './ApiClientService';
 
 const Stack = createStackNavigator();
@@ -24,6 +25,7 @@ const App = () => {
   const [displaySettings, setDisplaySettings] = useState(false);
   const [displayForm, setDisplayForm] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
+  //const [displayQuotalicious, setDisplayQuotalicious] = useState(true);
 
   const objToSave = {
     quote: quote.quote,
@@ -151,6 +153,9 @@ const App = () => {
     <NavigationContainer>
         <Stack.Navigator headerMode='none' >
           <Stack.Screen 
+            name="Quotalicious"
+            component={Quotalicious} />
+          <Stack.Screen 
             name="Dashboard">
               {(props) => <Dashboard
               whichQuotes={whichQuotes}
@@ -171,6 +176,9 @@ const App = () => {
               removeFavorite={removeFavorite}
               isLiked={isLiked}
               setIsLiked={setIsLiked}
+              myKey={key}
+              displayQuotalicious={displayQuotalicious}
+              setDisplayQuotalicious={setDisplayQuotalicious}
               {...props}
               />}
           </Stack.Screen>

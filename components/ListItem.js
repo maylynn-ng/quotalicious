@@ -92,8 +92,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   holder: {
+    borderWidth: 2,
     borderRadius: 5,
-    marginBottom: 15,
     margin: 0,
     flexDirection: 'row',
   },

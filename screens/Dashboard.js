@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { StyleSheet, View, ImageBackground, SafeAreaView } from 'react-native';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
@@ -8,6 +8,7 @@ import Modal from 'react-native-modal';
 import { FontAwesome5, MaterialCommunityIcons, Octicons } from '@expo/vector-icons'; 
 import HomeQuote from '../components/homeQuote';
 import ButtonBar from '../components/ButtonBar';
+import Quotalicious from '../splashScreens/quotalicious';
 
 // ANIMATIONS
 import LottieView from 'lottie-react-native';
@@ -18,9 +19,11 @@ import tap from '../animations/tap.json';
 
 
 
-export default function Dashboard({ navigation, isLiked, setIsLiked, removeFavorite, setPicture, setQuote, whichPictures, setQuoteType, pictureType, quote, picture, setPictureType, storeData, whichQuotes, quoteType, setDisplayForm, setDisplaySettings, displayForm, displaySettings}) {
+export default function Dashboard({ navigation, myKey, isLiked, setIsLiked, removeFavorite, setPicture, setQuote, whichPictures, setQuoteType, pictureType, quote, picture, setPictureType, storeData, whichQuotes, quoteType, setDisplayForm, setDisplaySettings, displayForm, displaySettings}) {
   const [displayConfetti, setDisplayConfetti] = useState(false);
   const [displayTap, setDisplayTap] = useState(true);
+  // const [displaySwipe, setSwipe] = useState(false);
+  const [liked, setLiked] = useState(false);
   const confettiAnimation = useRef(null);
   const bookmarkAnimation = useRef(null);
   const heartExplodeAnimation = useRef(null);
@@ -40,6 +43,28 @@ export default function Dashboard({ navigation, isLiked, setIsLiked, removeFavor
   const toggleDisplayForm = () => {
     setDisplayForm(prevState => !prevState)
   }
+
+  const like = () => {
+    storeData();
+    likeAnimation();
+    setIsLiked(true);
+  }
+
+  const unlike = async () => {
+    await removeFavorite((+myKey - 1).toString());
+    await setIsLiked(!isLiked);
+    console.log('NOW unlike', isLiked)
+  }
+
+  const toggleLike = () => {
+    isLiked
+    ? unlike()
+    : like();
+  }
+
+  useEffect(() => {
+    setLiked(isLiked);
+  }, [isLiked])
 
   return (
     <SafeAreaView>
@@ -78,6 +103,18 @@ export default function Dashboard({ navigation, isLiked, setIsLiked, removeFavor
                 />
             </Modal>
 
+            {/* <Modal 
+              backdropColor="white"
+              backdropOpacity={1}
+              animationIn="slideInLeft"
+              animationOut="fadeOut"
+              isVisible={displayQuotalicious}>
+              <TouchableOpacity 
+                onPress={() => setDisplayQuotalicious(false)}>
+                <Quotalicious />
+              </TouchableOpacity>
+            </Modal> */}
+
             <View style={styles.quoteContainer}>
             <TouchableWithoutFeedback
               onPress={() => {
@@ -113,17 +150,13 @@ export default function Dashboard({ navigation, isLiked, setIsLiked, removeFavor
             </View>
           </TouchableWithoutFeedback>
           <TouchableOpacity
-            onPress={() => {
-              storeData();
-              likeAnimation();
-              }}>
-            {!isLiked
+            onPress={() => toggleLike()}>
+            {!liked
             ? <LottieView
               style={styles.heartExplode}
               ref={heartExplodeAnimation}
               progress={0}
               autoSize={true}
-              onAnimationFinish={() => setIsLiked(true)}
               loop={false}
               source={heartExplode} />
             : <LottieView
