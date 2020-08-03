@@ -23,6 +23,7 @@ const App = () => {
   const [pictureType, setPictureType] = useState('random');
   const [displaySettings, setDisplaySettings] = useState(false);
   const [displayForm, setDisplayForm] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
 
   const objToSave = {
     quote: quote.quote,
@@ -56,6 +57,7 @@ const App = () => {
   const removeFavorite = async (unlike) => {
     try {
       await AsyncStorage.removeItem(unlike)
+      setIsLiked(false);
       getSavedFavorites();
     } catch (error) {
       console.error('no I dunnae think so', error);
@@ -167,6 +169,8 @@ const App = () => {
               setDisplayForm={setDisplayForm}
               storeData={storeData}
               removeFavorite={removeFavorite}
+              isLiked={isLiked}
+              setIsLiked={setIsLiked}
               {...props}
               />}
           </Stack.Screen>

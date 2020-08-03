@@ -2,15 +2,11 @@ import React, { useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, Button } from 'react-native';
 import Modal from 'react-native-modal';
 import * as ImagePicker from 'expo-image-picker';
-import Constants from 'expo-constants';
-import * as Permissions from 'expo-permissions';
 
 import QuoteForm from './QuoteForm';
 import { QuoteButton, PictureButton } from '../elements/buttons';
 
 const ButtonBar = ({whichPictures, displayForm, setDisplayForm, setDisplaySettings, whichQuotes, setPicture, setQuote, setQuoteType, setPictureType}) => {
-
-  let isSettingsVisible = true;
 
   const IMAGE_CHOICE = [
     { buttonName: 'Random',
@@ -62,7 +58,6 @@ const ButtonBar = ({whichPictures, displayForm, setDisplayForm, setDisplaySettin
           setDisplayForm={setDisplayForm} />
         </Modal>
 
-      {isSettingsVisible &&
       <View style={styles.container} >
         <View>
           <Text style={styles.headings} >QUOTE CHOICE</Text>
@@ -94,14 +89,12 @@ const ButtonBar = ({whichPictures, displayForm, setDisplayForm, setDisplaySettin
           <Text style={styles.headings} >CUSTOMIZE</Text>
             <Button
               title="Quote"
-              onPress={() => {
-                setDisplayForm(true);
-                isSettingsVisible = false;}} />
+              onPress={() => setDisplayForm(true)} />
             <Button
               title="Image"
               onPress={() => _pickImage()} />
         </View>
-      </View> }
+      </View> 
     </View>
   )
 };

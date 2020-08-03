@@ -1,17 +1,29 @@
-import React, { useRef } from 'react';
-import { SafeAreaView, Button, View, StyleSheet, ImageBackground, PermissionsAndroid, Alert, Platform } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { SafeAreaView, View, StyleSheet, ImageBackground, PermissionsAndroid, Alert, Platform } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import Modal from 'react-native-modal';
+import { Entypo } from '@expo/vector-icons'; 
+
+// SHARING
 import { captureRef } from 'react-native-view-shot';
 import * as MediaLibrary from 'expo-media-library';
 import * as Sharing from 'expo-sharing';
-import { Entypo } from '@expo/vector-icons'; 
+
+// ANIMATIONS
+import LottieView from 'lottie-react-native';
+import polaroid from '../animations/polaroid.json';
 
 import HomeQuote from '../components/homeQuote';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const FavFocus = ({ item }) => {
   const parsed = JSON.parse(item[1]);
   const viewRef = useRef();
-  
+  const polaroidAnimation = useRef();
+
+  const playPolaroid = () => {
+    polaroidAnimation.current.play();
+  }
+
   const getUri = async () => {
     const uriStr = await captureRef(viewRef, {
       format: 'png',
@@ -55,12 +67,14 @@ const FavFocus = ({ item }) => {
 
       const image = MediaLibrary.saveToLibraryAsync(uri);
       if (image) {
-        Alert.alert(
-          '',
-          'Saved to your camera roll!',
-          [{text: 'Yeah man!', onPress: () => {}}],
-          {cancelable: false},
-          );
+        // Alert.alert(
+        //   '',
+        //   'Saved to your camera roll!',
+        //   [{text: 'Yeah man!', onPress: () => {}}],
+        //   {cancelable: false},
+        //   );
+        
+        playPolaroid();
       } 
     } catch (error) {
       console.error('troubles downloading image: ', error)
@@ -78,6 +92,12 @@ const FavFocus = ({ item }) => {
 
   return (
     <SafeAreaView>
+      <Modal>
+        <LottieView
+          ref={polaroidAnimation}
+          loop={false}
+          source={polaroid} />
+      </Modal>
       <View style={styles.container} >
         <ImageBackground
           ref={viewRef}
@@ -91,7 +111,9 @@ const FavFocus = ({ item }) => {
         </ImageBackground>
         <View style={styles.buttons}>
           <TouchableOpacity 
-            onPress={downloadImage} >
+            onPress={() => {
+              downloadImage()
+              playPolaroid()}} >
               <Entypo 
                 name="save" 
                 size={48} 
@@ -133,6 +155,10 @@ const styles = StyleSheet.create({
   },
   quote: {
     alignSelf: 'center',
+  },
+  flash: {
+    height: '100%',
+    width: '100%',
   }
 })
 

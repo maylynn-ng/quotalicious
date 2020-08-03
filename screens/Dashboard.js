@@ -1,10 +1,11 @@
 import React, { useRef, useState } from 'react';
 import { StyleSheet, View, ImageBackground, SafeAreaView } from 'react-native';
-import Modal from 'react-native-modal';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 // COMPONENTS
+import Modal from 'react-native-modal';
+import { FontAwesome5, MaterialCommunityIcons, Octicons } from '@expo/vector-icons'; 
 import HomeQuote from '../components/homeQuote';
 import ButtonBar from '../components/ButtonBar';
 
@@ -12,15 +13,15 @@ import ButtonBar from '../components/ButtonBar';
 import LottieView from 'lottie-react-native';
 import heartBookmark from '../animations/heartBookmark.json'
 import confetti from '../animations/confetti.json';
-import settings from '../animations/settings.json';
-import heartExplode from '../animations/heartExplode.json';
+import heartExplode from '../animations/heart.json';
 
 
-export default function Dashboard({ navigation, removeFavorite, setPicture, setQuote, whichPictures, setQuoteType, pictureType, quote, picture, setPictureType, storeData, whichQuotes, quoteType, setDisplayForm, setDisplaySettings, displayForm, displaySettings}) {
+
+export default function Dashboard({ navigation, isLiked, setIsLiked, removeFavorite, setPicture, setQuote, whichPictures, setQuoteType, pictureType, quote, picture, setPictureType, storeData, whichQuotes, quoteType, setDisplayForm, setDisplaySettings, displayForm, displaySettings}) {
   const [displayConfetti, setDisplayConfetti] = useState(false);
+  const [displayIcons, setDisplayIcons] = useState(true);
   const confettiAnimation = useRef(null);
   const bookmarkAnimation = useRef(null);
-  const settingsAnimation = useRef(null);
   const heartExplodeAnimation = useRef(null);
 
   const likeAnimation = async () => {
@@ -28,10 +29,6 @@ export default function Dashboard({ navigation, removeFavorite, setPicture, setQ
     confettiAnimation.current.play();
     bookmarkAnimation.current.play();
     heartExplodeAnimation.current.play();
-  }
-
-  const playSettings = () => {
-    settingsAnimation.current.play();
   }
 
   const toggleDisplaySettings = () => {
@@ -42,12 +39,19 @@ export default function Dashboard({ navigation, removeFavorite, setPicture, setQ
     setDisplayForm(prevState => !prevState)
   }
 
+  const hideIcons = () => {
+    //styles.quoteContainer.justifyContent = 'flex-start';
+    setDisplayIcons(false);
+    //setTimeout(setDisplayIcons(false), 5000);
+  }
+
   return (
     <SafeAreaView>
     <View>
       <GestureRecognizer
-        onSwipeLeft={() => navigation.navigate('FavoriteList')}
-        onSwipeRight={() => whichPictures(pictureType)}>
+        onSwipeRight={() => {
+          whichPictures(pictureType);
+          setIsLiked(false)}}>
       <View style={styles.container}> 
         <ImageBackground 
           style={styles.picture}
@@ -77,53 +81,87 @@ export default function Dashboard({ navigation, removeFavorite, setPicture, setQ
           </Modal>
 
           <View style={styles.quoteContainer}>
-          <TouchableOpacity
-            onPress={() => {
-              setDisplaySettings(true);
-              playSettings();
-            }} >
+          {displayIcons && 
               <View style={styles.settingsArea}>
+                <TouchableOpacity
+                  onPress={() => {
+                    setDisplaySettings(true);
+                    console.log('pressing burger');
+                  }} >
+                <FontAwesome5 
+                  style={styles.hamburger}
+                  name="hamburger" 
+                  size={48} 
+                  color="white" />
+                  </TouchableOpacity>
+              <TouchableOpacity 
+                onPress={() => hideIcons()} >
+                <Octicons 
+                  style={styles.eyeIcon}
+                  name="eye-closed" 
+                  size={36} 
+                  color="white" />
+              </TouchableOpacity>
+              </View>}
+
+          <GestureRecognizer
+            onSwipeLeft={() => {
+              whichQuotes(quoteType)
+              setIsLiked(false)}}>  
+            <View>           
+              <View style={styles.quoteBox} >
                 <LottieView
-                  style={styles.settings}
-                  ref={settingsAnimation}
-                  progress={1}
+                  style={styles.bookmark}
+                  ref={bookmarkAnimation}
+                  duration={1500}
+                  autoPlay={false}
                   loop={false}
-                  source={settings} />
+                  source={heartBookmark} />
+                  <HomeQuote 
+                    removeFavorite={removeFavorite}
+                    storeData={storeData}
+                    quote={quote.quote}   
+                    author={quote.author} />
               </View>
-          </TouchableOpacity>
-          <GestureRecognizer 
-            onSwipeUp={() => whichQuotes(quoteType)}>             
-            <View style={styles.quoteBox} >
-              <LottieView
-                style={styles.bookmark}
-                ref={bookmarkAnimation}
+              {displayConfetti && <LottieView
+                ref={confettiAnimation}
                 autoPlay={false}
                 loop={false}
-                source={heartBookmark} />
-                <HomeQuote 
-                  removeFavorite={removeFavorite}
-                  storeData={storeData}
-                  quote={quote.quote}   
-                  author={quote.author} />
+                source={confetti} />}
             </View>
-            {displayConfetti && <LottieView
-              ref={confettiAnimation}
-              autoPlay={false}
-              loop={false}
-              source={confetti} />}
           </GestureRecognizer>
-          <TouchableOpacity
+          {displayIcons && <TouchableOpacity
             onPress={() => {
               storeData();
               likeAnimation();}}>
-            <LottieView
+            {!isLiked
+            ? <LottieView
               style={styles.heartExplode}
               ref={heartExplodeAnimation}
-              progress={1}
+              progress={0}
+              autoSize={true}
+              onAnimationFinish={() => setIsLiked(true)}
               loop={false}
               source={heartExplode} />
-          </TouchableOpacity>
+            : <LottieView
+            style={styles.heartExplode}
+            ref={heartExplodeAnimation}
+            progress={0.7}
+            autoSize={true}
+            loop={false}
+            source={heartExplode} />
+            }
+          </TouchableOpacity>}
           </View>
+          {displayIcons && <TouchableOpacity
+            onPress={() => navigation.navigate('FavoriteList')} >
+            <View style={styles.folder}>
+              <MaterialCommunityIcons 
+                name="folder-star" 
+                size={48} 
+                color="white" />
+            </View>
+          </TouchableOpacity>}
         </ImageBackground>
       </View>
       </GestureRecognizer>
@@ -149,9 +187,9 @@ const styles = StyleSheet.create({
     marginTop: 60,
   },
   quoteContainer: {
+    justifyContent: 'center',
     height: '100%',
     marginTop: -100,
-    justifyContent: 'center',
   },
   bookmark: {
     zIndex: 10,
@@ -161,20 +199,33 @@ const styles = StyleSheet.create({
     marginTop: 36,
   },
   heartExplode: {
-    width: 60,
+    height: 60,
+    padding: 0,
     alignSelf: 'center',
+    marginTop: 0,
+  },
+  folder: {
+    width: 60,
+    marginTop: 20,
+    alignSelf: 'flex-end',
   },
   confetti: {
     width: 400,
-  },
-  settings: {
-    width: 150,
+    marginTop: 30,
   },
   settingsArea: {
+    height: 100,
+    top: 80,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  hamburger: {
+    marginLeft: 30,
+  },
+  eyeIcon: {
     width: 100,
     height: 100,
-    top: 50,
-    alignItems: 'center',
-    justifyContent: 'flex-end',
+    marginTop: 63,
   }
 });
