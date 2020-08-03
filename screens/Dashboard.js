@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { StyleSheet, View, ImageBackground, SafeAreaView } from 'react-native';
 import GestureRecognizer from 'react-native-swipe-gestures';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 // COMPONENTS
 import Modal from 'react-native-modal';
@@ -14,14 +14,17 @@ import LottieView from 'lottie-react-native';
 import heartBookmark from '../animations/heartBookmark.json'
 import confetti from '../animations/confetti.json';
 import heartExplode from '../animations/heart.json';
+import poof from '../animations/loading.json';
 
 
 
 export default function Dashboard({ navigation, isLiked, setIsLiked, removeFavorite, setPicture, setQuote, whichPictures, setQuoteType, pictureType, quote, picture, setPictureType, storeData, whichQuotes, quoteType, setDisplayForm, setDisplaySettings, displayForm, displaySettings}) {
   const [displayConfetti, setDisplayConfetti] = useState(false);
+  const [displayPoof, setDisplayPoof] = useState(false);
   const confettiAnimation = useRef(null);
   const bookmarkAnimation = useRef(null);
   const heartExplodeAnimation = useRef(null);
+  const poofAnimation = useRef(null);
 
   const likeAnimation = async () => {
     await setDisplayConfetti(true)
@@ -41,44 +44,48 @@ export default function Dashboard({ navigation, isLiked, setIsLiked, removeFavor
   return (
     <SafeAreaView>
     <View style={styles.screen}>
+      <View style={styles.container}> 
       <GestureRecognizer
         onSwipeRight={() => {
           whichPictures(pictureType);
-          setIsLiked(false)}}>
-      <View style={styles.container}> 
+          setIsLiked(false);}}
+        onSwipeLeft={() => navigation.navigate('FavoriteList')}
+         >
         <ImageBackground 
           style={styles.picture}
+          resizeMode="cover"
+          resizeMethod="stretch"
           source={{uri: picture}}>
-          <Modal 
-            onBackdropPress={toggleDisplaySettings}
-            animationIn='bounceInUp'
-            animationOut='bounceOutDown'
-            isVisible={displaySettings}
-            >
-            <ButtonBar 
-              setDisplaySettings={setDisplaySettings}
-              setDisplayForm={setDisplayForm}
-              quote={quote}
-              storeData={storeData}
-              displayForm={displayForm}
-              toggleDisplayForm={toggleDisplayForm}
-              whichPictures={whichPictures} 
-              whichQuotes={whichQuotes} 
-              setQuote={setQuote}
-              setPicture={setPicture}
-              quoteType={quoteType}
-              setQuoteType={setQuoteType} 
-              setPictureType={setPictureType} 
-              navigation={navigation}
-              />
-          </Modal>
+            <Modal 
+              onBackdropPress={toggleDisplaySettings}
+              animationIn='bounceInUp'
+              animationOut='bounceOutDown'
+              isVisible={displaySettings}
+              >
+              <ButtonBar 
+                setDisplaySettings={setDisplaySettings}
+                setDisplayForm={setDisplayForm}
+                quote={quote}
+                storeData={storeData}
+                displayForm={displayForm}
+                toggleDisplayForm={toggleDisplayForm}
+                whichPictures={whichPictures} 
+                whichQuotes={whichQuotes} 
+                setQuote={setQuote}
+                setPicture={setPicture}
+                quoteType={quoteType}
+                setQuoteType={setQuoteType} 
+                setPictureType={setPictureType} 
+                navigation={navigation}
+                />
+            </Modal>
 
-          <View style={styles.quoteContainer}>
+            <View style={styles.quoteContainer}>
 
-          <GestureRecognizer
-            onSwipeLeft={() => {
-              whichQuotes(quoteType)
-              setIsLiked(false)}}>  
+          <TouchableOpacity
+            onPress={() => {
+              whichQuotes(quoteType);
+              setIsLiked(false);}}>  
             <View>           
               <View style={styles.quoteBox} >
                 <LottieView
@@ -100,11 +107,12 @@ export default function Dashboard({ navigation, isLiked, setIsLiked, removeFavor
                 loop={false}
                 source={confetti} />}
             </View>
-          </GestureRecognizer>
+          </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
               storeData();
-              likeAnimation();}}>
+              likeAnimation();
+              }}>
             {!isLiked
             ? <LottieView
               style={styles.heartExplode}
@@ -124,13 +132,11 @@ export default function Dashboard({ navigation, isLiked, setIsLiked, removeFavor
             }
           </TouchableOpacity>
           </View>
-
-        </ImageBackground>
+          </ImageBackground>
+        </GestureRecognizer>
         </View>
-      </GestureRecognizer>
-    </View>
 
-        <View style={styles.navBar}>
+      <View style={styles.navBar}>
           <View>
           <TouchableOpacity
             onPress={() => setDisplaySettings(true)} >
@@ -152,6 +158,7 @@ export default function Dashboard({ navigation, isLiked, setIsLiked, removeFavor
           </View>
 
         </View>
+      </View>
     </SafeAreaView>
   );
 };
@@ -159,56 +166,45 @@ export default function Dashboard({ navigation, isLiked, setIsLiked, removeFavor
 
 const styles = StyleSheet.create({
   screen: {
-    justifyContent: 'flex-start',
-    backgroundColor: 'blue',
+    justifyContent: 'space-between',
+    height: '100%',
+    alignItems: 'center',
   },
   container: {
-    borderRadius: 5,
-    padding: 10,
-    paddingVertical: 0,
-    backgroundColor: 'green',
-    margin: 0,
+    flexGrow: 2,
+    width: '95%',
+    maxHeight: '88%',
+    justifyContent: 'center',
+
   },  
   navBar: {
     opacity: 0.7,
-    marginTop: 0,
-    paddingTop: 0,
-    borderColor: 'red',
-    borderWidth: 1,
-    borderStyle: 'solid',
-    backgroundColor: 'orange',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    width: '100%',
+    padding: 15,
   },
   picture: {
-    height: '95%',
-    width: '100%',
-    margin: 0,
-    alignContent: 'center',
+    justifyContent: 'center',
+    height: '100%',
   },
   quoteBox: {
     alignSelf: 'center',
-    margin: 20,
-    marginTop: 60,
   },
   quoteContainer: {
     justifyContent: 'center',
-    height: '100%',
-    marginTop: -100,
   },
   bookmark: {
     zIndex: 10,
     width: 100,
     alignSelf: 'flex-end',
-    marginRight: 0,
     marginTop: 36,
   },
   heartExplode: {
     height: 60,
-    padding: 0,
     alignSelf: 'center',
-    marginTop: 0,
+    marginTop: 5,
   },
   folder: {
     marginRight: 30,

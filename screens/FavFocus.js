@@ -67,14 +67,13 @@ const FavFocus = ({ item }) => {
 
       const image = MediaLibrary.saveToLibraryAsync(uri);
       if (image) {
-        // Alert.alert(
-        //   '',
-        //   'Saved to your camera roll!',
-        //   [{text: 'Yeah man!', onPress: () => {}}],
-        //   {cancelable: false},
-        //   );
+         Alert.alert(
+           '',
+           'Saved to your camera roll!',
+           [{text: 'Yeah man!', onPress: () => {}}],
+           {cancelable: false},
+           );
         
-        playPolaroid();
       } 
     } catch (error) {
       console.error('troubles downloading image: ', error)
@@ -112,8 +111,7 @@ const FavFocus = ({ item }) => {
         <View style={styles.buttons}>
           <TouchableOpacity 
             onPress={() => {
-              downloadImage()
-              playPolaroid()}} >
+              downloadImage()}} >
               <Entypo 
                 name="save" 
                 size={48} 

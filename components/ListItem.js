@@ -11,10 +11,12 @@ import { FontAwesome } from '@expo/vector-icons';
 import LottieView from 'lottie-react-native';
 import explode from '../animations/explode.json';
 
+
 const ListItem = ({ quote, author, item, picture, removeFavorite}) => {
   const key = JSON.parse(item[0]);
   const [displayFocus, setDisplayFocus] = useState(false);
   const [displayExplode, setDisplayExplode] = useState(false);
+  //const [cardOpacity, setCardOpacity] = useState(1);
 
   const explodeAnimation = useRef(null);
 
@@ -49,18 +51,17 @@ const ListItem = ({ quote, author, item, picture, removeFavorite}) => {
                 quote={quote}
                 author={author} />
                 
-               {displayExplode && <LottieView
-                  style={styles.explode}
-                  ref={explodeAnimation}
-                  loop={false}
-                  autoPlay={true}
-                  onAnimationFinish={() => removeFavorite(key.toString())}
-                  source={explode} />}
             </TouchableOpacity>
             </View>
-
           </View>
         </ImageBackground>
+        {displayExplode && <LottieView
+          style={styles.explode}
+          ref={explodeAnimation}
+          loop={false}
+          autoPlay={true}
+          onAnimationFinish={() => removeFavorite(key.toString())}
+          source={explode} />}
       <Modal
         isVisible={displayFocus}
         onBackdropPress={() => setDisplayFocus(false)}
@@ -104,8 +105,10 @@ const styles = StyleSheet.create({
   explode: {
     position: 'absolute',
     width: 500,
+    height: 500,
     top: -50,
-    left: -40,
+    left: -30,
+    zIndex: 10,
   }
 })
 
