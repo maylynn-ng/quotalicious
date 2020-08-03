@@ -5,10 +5,10 @@ import Modal from 'react-native-modal';
 
 import FavFocus from '../screens/FavFocus';
 import HomeQuote from './homeQuote';
+import { FontAwesome } from '@expo/vector-icons';
 
 // ANIMATIONS
 import LottieView from 'lottie-react-native';
-import deleteButton from '../animations/delete.json';
 import explode from '../animations/explode.json';
 
 const ListItem = ({ quote, author, item, picture, removeFavorite}) => {
@@ -16,11 +16,9 @@ const ListItem = ({ quote, author, item, picture, removeFavorite}) => {
   const [displayFocus, setDisplayFocus] = useState(false);
   const [displayExplode, setDisplayExplode] = useState(false);
 
-  const deleteAnimation = useRef(null);
   const explodeAnimation = useRef(null);
 
   const playDelete = () => {
-    deleteAnimation.current.play();
     setDisplayExplode(true);
   }
 
@@ -36,12 +34,11 @@ const ListItem = ({ quote, author, item, picture, removeFavorite}) => {
               onPress={() => {
                 playDelete()
                 }} >
-              <LottieView
+              <FontAwesome 
                 style={styles.delete}
-                ref={deleteAnimation}
-                loop={false}
-                progress={1}
-                source={deleteButton} />
+                name="bomb" 
+                size={36} 
+                color="white" />
             </TouchableOpacity>
             </View>
             <View>
@@ -78,14 +75,16 @@ const ListItem = ({ quote, author, item, picture, removeFavorite}) => {
 
 const styles = StyleSheet.create({
   picture: {
-    width: '95%',
+    width: '100%',
     alignSelf: 'center',
     margin: 0,
   },
   quoteBox: {
     alignSelf: 'center',
     width: '80%',
-    margin: 20,
+    marginBottom: 40,
+    marginLeft: 20,
+    marginRight: -5,
   },
   container: {
     width: '100%',
@@ -99,14 +98,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   delete: {
-    width: 50,
-    margin: 0,
+    padding: 5,
+    alignSelf: 'flex-end',
   },
   explode: {
     position: 'absolute',
     width: 500,
     top: -50,
-    left: -50,
+    left: -40,
   }
 })
 

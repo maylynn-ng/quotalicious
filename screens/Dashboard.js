@@ -19,7 +19,6 @@ import heartExplode from '../animations/heart.json';
 
 export default function Dashboard({ navigation, isLiked, setIsLiked, removeFavorite, setPicture, setQuote, whichPictures, setQuoteType, pictureType, quote, picture, setPictureType, storeData, whichQuotes, quoteType, setDisplayForm, setDisplaySettings, displayForm, displaySettings}) {
   const [displayConfetti, setDisplayConfetti] = useState(false);
-  const [displayIcons, setDisplayIcons] = useState(true);
   const confettiAnimation = useRef(null);
   const bookmarkAnimation = useRef(null);
   const heartExplodeAnimation = useRef(null);
@@ -39,15 +38,9 @@ export default function Dashboard({ navigation, isLiked, setIsLiked, removeFavor
     setDisplayForm(prevState => !prevState)
   }
 
-  const hideIcons = () => {
-    //styles.quoteContainer.justifyContent = 'flex-start';
-    setDisplayIcons(false);
-    //setTimeout(setDisplayIcons(false), 5000);
-  }
-
   return (
     <SafeAreaView>
-    <View>
+    <View style={styles.screen}>
       <GestureRecognizer
         onSwipeRight={() => {
           whichPictures(pictureType);
@@ -58,8 +51,8 @@ export default function Dashboard({ navigation, isLiked, setIsLiked, removeFavor
           source={{uri: picture}}>
           <Modal 
             onBackdropPress={toggleDisplaySettings}
-            animationIn='slideInLeft'
-            animationOut='slideOutLeft'
+            animationIn='bounceInUp'
+            animationOut='bounceOutDown'
             isVisible={displaySettings}
             >
             <ButtonBar 
@@ -81,28 +74,6 @@ export default function Dashboard({ navigation, isLiked, setIsLiked, removeFavor
           </Modal>
 
           <View style={styles.quoteContainer}>
-          {displayIcons && 
-              <View style={styles.settingsArea}>
-                <TouchableOpacity
-                  onPress={() => {
-                    setDisplaySettings(true);
-                    console.log('pressing burger');
-                  }} >
-                <FontAwesome5 
-                  style={styles.hamburger}
-                  name="hamburger" 
-                  size={48} 
-                  color="white" />
-                  </TouchableOpacity>
-              <TouchableOpacity 
-                onPress={() => hideIcons()} >
-                <Octicons 
-                  style={styles.eyeIcon}
-                  name="eye-closed" 
-                  size={36} 
-                  color="white" />
-              </TouchableOpacity>
-              </View>}
 
           <GestureRecognizer
             onSwipeLeft={() => {
@@ -130,7 +101,7 @@ export default function Dashboard({ navigation, isLiked, setIsLiked, removeFavor
                 source={confetti} />}
             </View>
           </GestureRecognizer>
-          {displayIcons && <TouchableOpacity
+          <TouchableOpacity
             onPress={() => {
               storeData();
               likeAnimation();}}>
@@ -151,34 +122,69 @@ export default function Dashboard({ navigation, isLiked, setIsLiked, removeFavor
             loop={false}
             source={heartExplode} />
             }
-          </TouchableOpacity>}
+          </TouchableOpacity>
           </View>
-          {displayIcons && <TouchableOpacity
-            onPress={() => navigation.navigate('FavoriteList')} >
-            <View style={styles.folder}>
+
+        </ImageBackground>
+        </View>
+      </GestureRecognizer>
+    </View>
+
+        <View style={styles.navBar}>
+          <View>
+          <TouchableOpacity
+            onPress={() => setDisplaySettings(true)} >
+            <FontAwesome5 
+              style={styles.hamburger}
+              name="hamburger" 
+              size={48} 
+              color="black" />
+          </TouchableOpacity>
+          </View>
+          <View style={styles.folder}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('FavoriteList')} >
               <MaterialCommunityIcons 
                 name="folder-star" 
                 size={48} 
-                color="white" />
-            </View>
-          </TouchableOpacity>}
-        </ImageBackground>
-      </View>
-      </GestureRecognizer>
-    </View>
+                color="black" />
+          </TouchableOpacity>
+          </View>
+
+        </View>
     </SafeAreaView>
   );
 };
 
 
 const styles = StyleSheet.create({
+  screen: {
+    justifyContent: 'flex-start',
+    backgroundColor: 'blue',
+  },
   container: {
     borderRadius: 5,
     padding: 10,
+    paddingVertical: 0,
+    backgroundColor: 'green',
+    margin: 0,
   },  
+  navBar: {
+    opacity: 0.7,
+    marginTop: 0,
+    paddingTop: 0,
+    borderColor: 'red',
+    borderWidth: 1,
+    borderStyle: 'solid',
+    backgroundColor: 'orange',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
   picture: {
-    height: '100%',
+    height: '95%',
     width: '100%',
+    margin: 0,
     alignContent: 'center',
   },
   quoteBox: {
@@ -205,27 +211,13 @@ const styles = StyleSheet.create({
     marginTop: 0,
   },
   folder: {
-    width: 60,
-    marginTop: 20,
-    alignSelf: 'flex-end',
+    marginRight: 30,
   },
   confetti: {
     width: 400,
     marginTop: 30,
   },
-  settingsArea: {
-    height: 100,
-    top: 80,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
   hamburger: {
     marginLeft: 30,
   },
-  eyeIcon: {
-    width: 100,
-    height: 100,
-    marginTop: 63,
-  }
 });
