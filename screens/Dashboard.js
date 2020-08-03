@@ -14,17 +14,17 @@ import LottieView from 'lottie-react-native';
 import heartBookmark from '../animations/heartBookmark.json'
 import confetti from '../animations/confetti.json';
 import heartExplode from '../animations/heart.json';
-import poof from '../animations/loading.json';
+import tap from '../animations/tap.json';
 
 
 
 export default function Dashboard({ navigation, isLiked, setIsLiked, removeFavorite, setPicture, setQuote, whichPictures, setQuoteType, pictureType, quote, picture, setPictureType, storeData, whichQuotes, quoteType, setDisplayForm, setDisplaySettings, displayForm, displaySettings}) {
   const [displayConfetti, setDisplayConfetti] = useState(false);
-  const [displayPoof, setDisplayPoof] = useState(false);
+  const [displayTap, setDisplayTap] = useState(true);
   const confettiAnimation = useRef(null);
   const bookmarkAnimation = useRef(null);
   const heartExplodeAnimation = useRef(null);
-  const poofAnimation = useRef(null);
+  const tapAnimation = useRef(null);
 
   const likeAnimation = async () => {
     await setDisplayConfetti(true)
@@ -85,7 +85,8 @@ export default function Dashboard({ navigation, isLiked, setIsLiked, removeFavor
           <TouchableOpacity
             onPress={() => {
               whichQuotes(quoteType);
-              setIsLiked(false);}}>  
+              setIsLiked(false)
+              setDisplayTap(false);}}>  
             <View>           
               <View style={styles.quoteBox} >
                 <LottieView
@@ -100,6 +101,12 @@ export default function Dashboard({ navigation, isLiked, setIsLiked, removeFavor
                     storeData={storeData}
                     quote={quote.quote}   
                     author={quote.author} />
+              {displayTap && <LottieView
+                style={styles.tap}
+                ref={tapAnimation}
+                loop={true}
+                autoPlay={true}
+                source={tap} /> }
               </View>
               {displayConfetti && <LottieView
                 ref={confettiAnimation}
@@ -216,4 +223,8 @@ const styles = StyleSheet.create({
   hamburger: {
     marginLeft: 30,
   },
+  tap: {
+    position: 'absolute',
+    top: 40,
+  }
 });
