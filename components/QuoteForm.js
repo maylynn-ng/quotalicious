@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, TextInput, View, StyleSheet, SafeAreaView } from 'react-native';
+import { Button, Text, TextInput, View, StyleSheet, SafeAreaView } from 'react-native';
 
 import HomeQuote from './homeQuote';
 
@@ -44,12 +44,10 @@ const QuoteForm = ({ setQuote, setDisplaySettings, setDisplayForm }) => {
   return (
     <SafeAreaView>
       <View style={styles.container}>
-        <HomeQuote 
-          style={styles.quoteBox}
-          quote={customQuote}   
-          author={customAuthor}/>
+        <View style={styles.quote}>
+          <Text>"</Text>
         <TextInput
-          style={styles.textInput}
+          style={styles.quoteInput}
           placeholder="Your quote"
           enablesReturnKeyAutomatically={true}
           autoCapitalize="sentences"
@@ -58,17 +56,22 @@ const QuoteForm = ({ setQuote, setDisplaySettings, setDisplayForm }) => {
           returnKeyLabel='done'
           value={customQuote}
           />
-        <TextInput
-          style={styles.textInput}
-          enablesReturnKeyAutomatically={true}
-          onFocus={() => setCustomAuthor('')}
-          placeholder="Your author"
-          autoCapitalize="words"
-          multiline={true}
-          onChangeText={text => authorInputHandler(text)}
-          returnKeyLabel='done'
-          value={customAuthor}
-          />
+          <Text style={styles.secondQuote}>"</Text>
+        </View>
+        <View style={styles.author}>
+          <Text>-</Text>
+          <TextInput
+            style={styles.authorInput}
+            enablesReturnKeyAutomatically={true}
+            onFocus={() => setCustomAuthor('')}
+            placeholder="Your author"
+            autoCapitalize="words"
+            multiline={true}
+            onChangeText={text => authorInputHandler(text)}
+            returnKeyLabel='done'
+            value={customAuthor}
+            />
+          </View>
         <Button
           style={styles.inspire}
           title="Inspire"
@@ -84,15 +87,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     backgroundColor: 'white',
+    minHeight: 200,
     borderRadius: 5,
     opacity: 0.95,
+    justifyContent: 'space-between',
   },
-  textInput: {
-    marginTop: 20,
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    width: '80%',
+  quote: {
+    flexDirection: 'row',
+    fontSize: 20,
+  },
+  quoteInput: {
+    fontSize: 20,
+  },
+  authorInput: {
+    alignSelf: 'flex-end',
+    fontSize: 20,
+  },
+  author: {
+    flexDirection: 'row',
+    width: '90%',
+    justifyContent: 'flex-end',
   },
   quoteBox: {
     width: '100%',
@@ -100,6 +114,9 @@ const styles = StyleSheet.create({
   },
   inspire: {
     marginTop: 10,
+  },
+  secondQuote: {
+    alignSelf: 'flex-end',
   }
 })
 

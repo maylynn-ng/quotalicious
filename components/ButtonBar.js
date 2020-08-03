@@ -6,7 +6,7 @@ import * as ImagePicker from 'expo-image-picker';
 import QuoteForm from './QuoteForm';
 import { QuoteButton, PictureButton } from '../elements/buttons';
 
-const ButtonBar = ({whichPictures, displayForm, setDisplayForm, setDisplaySettings, whichQuotes, setPicture, setQuote, setQuoteType, setPictureType}) => {
+const ButtonBar = ({whichPictures, displayForm, setDisplayForm, setDisplaySettings, whichQuotes, setPicture, setQuote, quoteType, setQuoteType, setPictureType}) => {
 
   const IMAGE_CHOICE = [
     { buttonName: 'Random',
@@ -88,10 +88,10 @@ const ButtonBar = ({whichPictures, displayForm, setDisplayForm, setDisplaySettin
         <View>
           <Text style={styles.headings} >CUSTOMIZE</Text>
             <Button
-              title="Quote"
+              title="Your Quote"
               onPress={() => setDisplayForm(true)} />
             <Button
-              title="Image"
+              title="Your Image"
               onPress={() => _pickImage()} />
         </View>
       </View> 

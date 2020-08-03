@@ -16,7 +16,6 @@ const ListItem = ({ quote, author, item, picture, removeFavorite}) => {
   const key = JSON.parse(item[0]);
   const [displayFocus, setDisplayFocus] = useState(false);
   const [displayExplode, setDisplayExplode] = useState(false);
-  //const [cardOpacity, setCardOpacity] = useState(1);
 
   const explodeAnimation = useRef(null);
 

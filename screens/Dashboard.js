@@ -53,8 +53,6 @@ export default function Dashboard({ navigation, isLiked, setIsLiked, removeFavor
          >
         <ImageBackground 
           style={styles.picture}
-          resizeMode="cover"
-          resizeMethod="stretch"
           source={{uri: picture}}>
             <Modal 
               onBackdropPress={toggleDisplaySettings}
@@ -81,12 +79,11 @@ export default function Dashboard({ navigation, isLiked, setIsLiked, removeFavor
             </Modal>
 
             <View style={styles.quoteContainer}>
-
-          <TouchableOpacity
-            onPress={() => {
-              whichQuotes(quoteType);
-              setIsLiked(false)
-              setDisplayTap(false);}}>  
+            <TouchableWithoutFeedback
+              onPress={() => {
+                whichQuotes(quoteType);
+                setIsLiked(false)
+                setDisplayTap(false);}}>  
             <View>           
               <View style={styles.quoteBox} >
                 <LottieView
@@ -114,7 +111,7 @@ export default function Dashboard({ navigation, isLiked, setIsLiked, removeFavor
                 loop={false}
                 source={confetti} />}
             </View>
-          </TouchableOpacity>
+          </TouchableWithoutFeedback>
           <TouchableOpacity
             onPress={() => {
               storeData();
