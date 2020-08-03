@@ -9,7 +9,7 @@ import Dashboard from './screens/Dashboard';
 import FavoriteList from './screens/favoriteList';
 import FavFocus from './screens/FavFocus';
 import ButtonBar from './components/ButtonBar';
-import QuoteForm from './components/QuoteForm';
+import RickRoll from './screens/RICKROLL';
 import { randomQuote, randomPicture, getKanye, getTaylor, getDonald, pictureBW, pictureBlur } from './ApiClientService';
 
 const Stack = createStackNavigator();
@@ -187,6 +187,9 @@ const App = () => {
           <Stack.Screen 
             name="FavFocus"
             component={FavFocus} />
+          <Stack.Screen 
+            name="RickRoll"
+            component={RickRoll} />
         </Stack.Navigator>
       </NavigationContainer>
   )

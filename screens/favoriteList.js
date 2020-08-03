@@ -1,6 +1,9 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { SafeAreaView, Text, View, FlatList, StyleSheet } from 'react-native';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import Modal from 'react-native-modal';
 import ListItem from '../components/ListItem';
+import RickRoll from './RICKROLL';
 
 // ANIMATIONS
 import LottieView from 'lottie-react-native';
@@ -9,6 +12,7 @@ import meerkat from '../animations/meerkat.json';
 const FavoriteList = ({ navigation, favorites, removeFavorite }) => {
 
   const meerkatAnimation = useRef(null);
+  const [rickRoll, setRickRoll] = useState(false);
 
   return (
     <SafeAreaView>
@@ -32,12 +36,25 @@ const FavoriteList = ({ navigation, favorites, removeFavorite }) => {
         </View>
         : 
         <View>
+
+          <Modal
+            isVisible={rickRoll}
+            animationIn="rotate"
+            animationOut="rotate"
+            onBackdropPress={() => setRickRoll(false)} >
+            <RickRoll />
+          </Modal>
+          
           <LottieView
             style={styles.meerkat}
             ref={meerkatAnimation}
             autoPlay={true}
             loop={true}
             source={meerkat} />
+            <TouchableWithoutFeedback
+              onPress={() => setRickRoll(true)}>
+            <View style={styles.easterEgg} />
+          </TouchableWithoutFeedback>
           <Text style={styles.emptyText}>
             Where Da Likes At??
           </Text>
@@ -70,6 +87,11 @@ const styles = StyleSheet.create({
     textAlign: 'center', 
     fontSize: 32,
     fontWeight: 'bold',
+  },
+  easterEgg: {
+    height: 20,
+    width: 20,
+    alignSelf: 'center',
   }
 })
 
