@@ -12,27 +12,22 @@ import ButtonBar from '../components/ButtonBar';
 // ANIMATIONS
 import LottieView from 'lottie-react-native';
 import heartBookmark from '../animations/heartBookmark.json'
-import confetti from '../animations/confetti.json';
 import heartExplode from '../animations/heart.json';
 import tap from '../animations/tap.json';
 import swipe from '../animations/swipeRight.json';
 
 
 export default function Dashboard({ navigation, myKey, isLiked, setIsLiked, removeFavorite, setPicture, setQuote, whichPictures, setQuoteType, pictureType, quote, picture, setPictureType, storeData, whichQuotes, quoteType, setDisplayForm, setDisplaySettings, displayForm, displaySettings}) {
-  const [displayConfetti, setDisplayConfetti] = useState(false);
   const [displayTap, setDisplayTap] = useState(true);
   const [displaySwipe, setDisplaySwipe] = useState(false);
   const [liked, setLiked] = useState(false);
 
-  const confettiAnimation = useRef(null);
   const bookmarkAnimation = useRef(null);
   const heartExplodeAnimation = useRef(null);
   const tapAnimation = useRef(null);
   const swipeAnimation = useRef(null);
 
-  const likeAnimation = async () => {
-    await setDisplayConfetti(true)
-    confettiAnimation.current.play();
+  const likeAnimation = () => {
     bookmarkAnimation.current.play();
     heartExplodeAnimation.current.play();
   }
@@ -43,11 +38,6 @@ export default function Dashboard({ navigation, myKey, isLiked, setIsLiked, remo
 
   const toggleDisplayForm = () => {
     setDisplayForm(prevState => !prevState)
-  }
-
-  let showSwipeThenNull = () => {
-    showSwipeThenNull = null;
-    setDisplaySwipe(true);
   }
 
   const like = () => {
@@ -107,15 +97,8 @@ export default function Dashboard({ navigation, myKey, isLiked, setIsLiked, remo
                 navigation={navigation}
                 />
             </Modal>
-
-            <View style={styles.quoteContainer}>
-            <TouchableWithoutFeedback
-              onPress={() => {
-                whichQuotes(quoteType);
-                setDisplayTap(false)
-                showSwipeThenNull();}}>  
+            
             <View>           
-              <View style={styles.quoteBox} >
                 <LottieView
                   style={styles.bookmark}
                   ref={bookmarkAnimation}
@@ -123,26 +106,32 @@ export default function Dashboard({ navigation, myKey, isLiked, setIsLiked, remo
                   autoPlay={false}
                   loop={false}
                   source={heartBookmark} />
-                  <HomeQuote 
-                    removeFavorite={removeFavorite}
-                    storeData={storeData}
-                    quote={quote.quote}   
-                    author={quote.author} />
+                  <TouchableWithoutFeedback
+                    onPress={() => whichQuotes(quoteType)}>  
+                  <View>
+                    <HomeQuote 
+                      style={styles.quoteBox}
+                      removeFavorite={removeFavorite}
+                      storeData={storeData}
+                      quote={quote.quote}   
+                      author={quote.author} />
+                  </View>
+                  </TouchableWithoutFeedback>
               {displayTap && 
-              <LottieView
-                style={styles.tap}
-                ref={tapAnimation}
-                loop={true}
-                autoPlay={true}
-                source={tap} /> }
+              <TouchableOpacity
+                onPress={() => {
+                  setDisplayTap(false)
+                  setDisplaySwipe(true)
+                }} >
+                  <LottieView
+                  style={styles.tap}
+                  ref={tapAnimation}
+                  loop={true}
+                  autoPlay={true}
+                  source={tap} />
+              </TouchableOpacity> }
               </View>
-              {displayConfetti && <LottieView
-                ref={confettiAnimation}
-                autoPlay={false}
-                loop={false}
-                source={confetti} />}
-            </View>
-          </TouchableWithoutFeedback>
+
           <TouchableOpacity
             onPress={() => toggleLike()}>
             {!liked
@@ -168,7 +157,6 @@ export default function Dashboard({ navigation, myKey, isLiked, setIsLiked, remo
                 loop={true}
                 autoPlay={true}
                 source={swipe} />}
-          </View>
           </ImageBackground>
         </GestureRecognizer>
         </View>
@@ -212,7 +200,6 @@ const styles = StyleSheet.create({
     width: '95%',
     maxHeight: '88%',
     justifyContent: 'center',
-
   },  
   navBar: {
     opacity: 0.7,
@@ -224,13 +211,9 @@ const styles = StyleSheet.create({
   },
   picture: {
     justifyContent: 'center',
+    alignItems: 'center',
     height: '100%',
-  },
-  quoteBox: {
-    alignSelf: 'center',
-  },
-  quoteContainer: {
-    justifyContent: 'center',
+    padding: 5,
   },
   bookmark: {
     zIndex: 10,
@@ -246,10 +229,6 @@ const styles = StyleSheet.create({
   folder: {
     marginRight: 30,
   },
-  confetti: {
-    width: 400,
-    marginTop: 30,
-  },
   hamburger: {
     marginLeft: 30,
   },
@@ -258,8 +237,8 @@ const styles = StyleSheet.create({
     top: 40,
   },
   swipe: {
-    position: 'absolute',
     width: 250,
+    position: 'absolute',
     top: -40,
     left: 20,
   }

@@ -16,8 +16,9 @@ const HomeQuote = ({quote, author}) => {
 
 const styles = StyleSheet.create({
   quoteBox: {
+    alignSelf: 'center',
     backgroundColor: '#d4d4d4',
-    width: '90%',
+    width: '100%',
     opacity: 0.87,
     paddingVertical: 30,
     paddingHorizontal: 30,

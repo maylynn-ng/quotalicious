@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { SafeAreaView, View, StyleSheet, ImageBackground, PermissionsAndroid, Alert, Platform } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import Modal from 'react-native-modal';
 import { Entypo } from '@expo/vector-icons'; 
 
 // SHARING
@@ -11,18 +10,21 @@ import * as Sharing from 'expo-sharing';
 
 // ANIMATIONS
 import LottieView from 'lottie-react-native';
-import polaroid from '../animations/polaroid.json';
+import aeroplane from '../animations/paperaeroplane.json';
+import sent from '../animations/sent.json';
+import confetti from '../animations/confetti.json';
 
 import HomeQuote from '../components/homeQuote';
 
 const FavFocus = ({ item }) => {
+  const [displayAeroplane, setDisplayAeroplane] = useState(false);
+  const [displaySent, setDisplaySent] = useState(false);
+  const [displayConfetti, setDisplayConfetti] = useState(false);
   const parsed = JSON.parse(item[1]);
   const viewRef = useRef();
-  const polaroidAnimation = useRef();
-
-  const playPolaroid = () => {
-    polaroidAnimation.current.play();
-  }
+  const aeroplaneAnimation = useRef();
+  const sentAnimation = useRef();
+  const confettiAnimation = useRef();
 
   const getUri = async () => {
     const uriStr = await captureRef(viewRef, {
@@ -67,13 +69,7 @@ const FavFocus = ({ item }) => {
 
       const image = MediaLibrary.saveToLibraryAsync(uri);
       if (image) {
-         Alert.alert(
-           '',
-           'Saved to your camera roll!',
-           [{text: 'Yeah man!', onPress: () => {}}],
-           {cancelable: false},
-           );
-        
+        setDisplayConfetti(true);
       } 
     } catch (error) {
       console.error('troubles downloading image: ', error)
@@ -86,17 +82,11 @@ const FavFocus = ({ item }) => {
       alert('Ai ya, looks like we cannot share');
       return;
     }
-    await Sharing.shareAsync(uri);
+    await Sharing.shareAsync(uri)
   }
 
   return (
     <SafeAreaView>
-      <Modal>
-        <LottieView
-          ref={polaroidAnimation}
-          loop={false}
-          source={polaroid} />
-      </Modal>
       <View style={styles.container} >
         <ImageBackground
           ref={viewRef}
@@ -108,17 +98,39 @@ const FavFocus = ({ item }) => {
                 author={parsed.author} />
               </View>
         </ImageBackground>
+        {displayAeroplane &&  <LottieView
+          style={styles.aeroplane}
+          ref={aeroplaneAnimation}
+          autoPlay={true}
+          loop={true}
+          source={aeroplane} />}
+        {displayConfetti &&  <LottieView
+          style={styles.tick}
+          ref={confettiAnimation}
+          autoPlay={true}
+          onAnimationFinish={() => setDisplayConfetti(false)}
+          loop={false}
+          source={confetti} />}
+        {displaySent &&  <LottieView
+          style={styles.sent}
+          ref={sentAnimation}
+          autoPlay={true}
+          loop={false}
+          source={sent} />}
         <View style={styles.buttons}>
           <TouchableOpacity 
-            onPress={() => {
-              downloadImage()}} >
+            onPress={() => downloadImage()} >
               <Entypo 
                 name="save" 
                 size={48} 
                 color="white" />
             </TouchableOpacity>
           <TouchableOpacity
-            onPress={shareImage} >
+            onPress={async () => {
+              setDisplayAeroplane(true);
+              await shareImage();
+              setDisplayAeroplane(false);
+              setDisplaySent(true);}}>
               <Entypo 
                 name="share" 
                 size={48} 
@@ -154,9 +166,24 @@ const styles = StyleSheet.create({
   quote: {
     alignSelf: 'center',
   },
-  flash: {
-    height: '100%',
-    width: '100%',
+  aeroplane: {
+    height: 400,
+    width: 400,
+    position: 'absolute',
+    top: -10,
+  },
+  sent: {
+    height: 400,
+    width: 400,
+    position: 'absolute',
+    top: -10,
+    left: -5,
+  },
+  tick: {
+    position: 'absolute',
+    left: -10,
+    width: 400,
+    height: 400,
   }
 })
 
