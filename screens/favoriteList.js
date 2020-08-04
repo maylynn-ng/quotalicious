@@ -75,6 +75,7 @@ const styles = StyleSheet.create({
   },
   container: {
     padding: 15,
+    height: '100%',
   },
   item: {
     alignSelf: 'center',

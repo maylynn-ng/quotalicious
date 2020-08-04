@@ -15,18 +15,20 @@ import heartBookmark from '../animations/heartBookmark.json'
 import confetti from '../animations/confetti.json';
 import heartExplode from '../animations/heart.json';
 import tap from '../animations/tap.json';
-
+import swipe from '../animations/swipeRight.json';
 
 
 export default function Dashboard({ navigation, myKey, isLiked, setIsLiked, removeFavorite, setPicture, setQuote, whichPictures, setQuoteType, pictureType, quote, picture, setPictureType, storeData, whichQuotes, quoteType, setDisplayForm, setDisplaySettings, displayForm, displaySettings}) {
   const [displayConfetti, setDisplayConfetti] = useState(false);
   const [displayTap, setDisplayTap] = useState(true);
-  // const [displaySwipe, setSwipe] = useState(false);
+  const [displaySwipe, setDisplaySwipe] = useState(false);
   const [liked, setLiked] = useState(false);
+
   const confettiAnimation = useRef(null);
   const bookmarkAnimation = useRef(null);
   const heartExplodeAnimation = useRef(null);
   const tapAnimation = useRef(null);
+  const swipeAnimation = useRef(null);
 
   const likeAnimation = async () => {
     await setDisplayConfetti(true)
@@ -43,6 +45,11 @@ export default function Dashboard({ navigation, myKey, isLiked, setIsLiked, remo
     setDisplayForm(prevState => !prevState)
   }
 
+  let showSwipeThenNull = () => {
+    showSwipeThenNull = null;
+    setDisplaySwipe(true);
+  }
+
   const like = () => {
     storeData();
     likeAnimation();
@@ -52,7 +59,6 @@ export default function Dashboard({ navigation, myKey, isLiked, setIsLiked, remo
   const unlike = async () => {
     await removeFavorite((+myKey - 1).toString());
     await setIsLiked(!isLiked);
-    console.log('NOW unlike', isLiked)
   }
 
   const toggleLike = () => {
@@ -72,7 +78,7 @@ export default function Dashboard({ navigation, myKey, isLiked, setIsLiked, remo
       <GestureRecognizer
         onSwipeRight={() => {
           whichPictures(pictureType);
-          setIsLiked(false);}}
+          setDisplaySwipe(false);}}
         onSwipeLeft={() => navigation.navigate('FavoriteList')}
          >
         <ImageBackground 
@@ -106,8 +112,8 @@ export default function Dashboard({ navigation, myKey, isLiked, setIsLiked, remo
             <TouchableWithoutFeedback
               onPress={() => {
                 whichQuotes(quoteType);
-                setIsLiked(false)
-                setDisplayTap(false);}}>  
+                setDisplayTap(false)
+                showSwipeThenNull();}}>  
             <View>           
               <View style={styles.quoteBox} >
                 <LottieView
@@ -122,7 +128,8 @@ export default function Dashboard({ navigation, myKey, isLiked, setIsLiked, remo
                     storeData={storeData}
                     quote={quote.quote}   
                     author={quote.author} />
-              {displayTap && <LottieView
+              {displayTap && 
+              <LottieView
                 style={styles.tap}
                 ref={tapAnimation}
                 loop={true}
@@ -152,9 +159,15 @@ export default function Dashboard({ navigation, myKey, isLiked, setIsLiked, remo
             progress={0.7}
             autoSize={true}
             loop={false}
-            source={heartExplode} />
-            }
+            source={heartExplode} />}
           </TouchableOpacity>
+
+          {displaySwipe && <LottieView
+                style={styles.swipe}
+                ref={swipeAnimation}
+                loop={true}
+                autoPlay={true}
+                source={swipe} />}
           </View>
           </ImageBackground>
         </GestureRecognizer>
@@ -243,5 +256,11 @@ const styles = StyleSheet.create({
   tap: {
     position: 'absolute',
     top: 40,
+  },
+  swipe: {
+    position: 'absolute',
+    width: 250,
+    top: -40,
+    left: 20,
   }
 });

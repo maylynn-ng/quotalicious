@@ -124,12 +124,14 @@ const App = () => {
     else if (quoteType === 'kanye') getKanyeQuote();
     else if (quoteType === 'taylor') getTaylorQuote();
     else if (quoteType === 'trump') getDonaldQuote();
+    setIsLiked(false);
   }
 
   const whichPictures = (pictureType) => {
     if (pictureType === 'random') getRandomPicture();
     else if (pictureType === 'bw') getPictureBW();
     else if (pictureType === 'blur') getPictureBlur();
+    setIsLiked(false);
   }
 
   // PERMISSIONS

@@ -95,6 +95,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 5,
     margin: 0,
+    marginBottom: 15,
     flexDirection: 'row',
   },
   delete: {

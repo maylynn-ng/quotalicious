@@ -1,17 +1,29 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { SafeAreaView, View, Text, StyleSheet } from 'react-native';
 import LottieView from 'lottie-react-native';
 
 import lickingLips from '../animations/lickingLips.json';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 const Quotalicious = ({navigation}) => {
   const lipsAnimation = useRef();
 
+  const goToDashboard = () => {
+    setTimeout(() => {
+      navigation.navigate('Dashboard');
+    }, 4000)
+  }
+
+  useEffect(() => {
+    lipsAnimation.current.play();
+  }, [])
+
   return (
     <SafeAreaView>
-      <TouchableOpacity 
-        onPress={() => navigation.navigate('Dashboard')}>
+      <TouchableWithoutFeedback 
+        onPress={() => {
+          lipsAnimation.current.play()
+          goToDashboard();}}>
 
       <View style={styles.container}>
         <View style={styles.lips}>
@@ -19,12 +31,13 @@ const Quotalicious = ({navigation}) => {
             style={styles.lips}
             ref={lipsAnimation}
             autoPlay={true}
+            onAnimationFinish={() => navigation.navigate('Dashboard')}
             loop={false}
             source={lickingLips} />
         </View>
         <Text style={styles.text}>Quotalicious</Text>
       </View>
-      </TouchableOpacity>
+      </TouchableWithoutFeedback>
     </SafeAreaView>
   )
 }
