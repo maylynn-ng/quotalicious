@@ -38,9 +38,7 @@ A simple iOS app designed to make spreading inspiration not only easy, but an en
 
 Here's a video demo on [YouTube](https://youtu.be/7rETqXeTP14)
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/7rETqXeTP14" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-
+[![Watch the video](https://ibb.co/HHq9g0h)](https://www.youtube.com/watch?v=7rETqXeTP14&feature=youtu.be)
 
 ### Tech Stack
 
