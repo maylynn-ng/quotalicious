@@ -24,10 +24,12 @@
 
 ### Screenshots
 
+<a href="https://ibb.co/4dTM26Y"><img src="https://i.ibb.co/dg26tdL/1.png" alt="1" border="0" /></a>
+
 A simple iOS app designed to make spreading inspiration not only easy, but an enjoyable experience. Quotalicious was built with the goal of creating something ready to deploy in the time frame I was given. I also wanted to hone my skills in API calls, passing states and try my hand at a new technology (React Native). I obviously found a new calling in animations :green_heart: Mostly I wanted an app that I could experience the entire life cycle of development within a deadline and make people laugh :grimacing: I suppose now I would like to deploy!
 
 
-
+<a href="https://ibb.co/Z2XXzjK"><img src="https://i.ibb.co/Bn332pj/2.png" alt="2" border="0" /></a>
 
 
 ### Video
