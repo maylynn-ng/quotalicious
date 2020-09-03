@@ -118,11 +118,11 @@ export default function Dashboard({ navigation, myKey, isLiked, setIsLiked, remo
                   </View>
                   </TouchableWithoutFeedback>
               {displayTap && 
-              <TouchableOpacity
-                onPress={() => {
-                  setDisplayTap(false)
-                  setDisplaySwipe(true)
-                }} >
+                <TouchableOpacity
+                  onPress={() => {
+                    setDisplayTap(false)
+                    setDisplaySwipe(true)
+                  }} >
                   <LottieView
                   style={styles.tap}
                   ref={tapAnimation}

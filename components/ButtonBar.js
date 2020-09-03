@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, Text, FlatList, StyleSheet, Button } from 'react-native';
 import Modal from 'react-native-modal';
 import * as ImagePicker from 'expo-image-picker';

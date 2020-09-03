@@ -35,8 +35,7 @@ const QuoteForm = ({ setQuote, setDisplaySettings, setDisplayForm }) => {
       setCustomAuthor('');
     }
     setDisplayForm(false);
-    setDisplaySettings(false);
-    setCustomQuote('');
+    setDisplaySettings(false);;
   }
 
   return (
@@ -45,31 +44,31 @@ const QuoteForm = ({ setQuote, setDisplaySettings, setDisplayForm }) => {
       <View style={styles.quoteBox}>
         <View style={styles.quote}>
           <Text>"</Text>
-        <TextInput
-          style={styles.quoteInput}
-          placeholder="Your quote"
-          enablesReturnKeyAutomatically={true}
-          autoCapitalize="sentences"
-          multiline={true}
-          onChangeText={text => quoteInputHandler(text)}
-          returnKeyLabel='done'
-          value={customQuote}
-          />
-          <Text style={styles.secondQuote}>"</Text>
+          <TextInput
+            style={styles.quoteInput}
+            placeholder="Your quote"
+            enablesReturnKeyAutomatically={true}
+            autoCapitalize="sentences"
+            multiline={true}
+            onChangeText={text => {quoteInputHandler(text)}}
+            returnKeyLabel='done'
+            value={customQuote}
+            />
+            <Text style={styles.secondQuote}>"</Text>
         </View>
         <View style={styles.author}>
           <Text>- </Text>
-          <TextInput
-            style={styles.authorInput}
-            enablesReturnKeyAutomatically={true}
-            onFocus={() => setCustomAuthor('')}
-            placeholder="Your author"
-            autoCapitalize="words"
-            multiline={true}
-            onChangeText={text => authorInputHandler(text)}
-            returnKeyLabel='done'
-            value={customAuthor}
-            />
+            <TextInput
+              style={styles.authorInput}
+              enablesReturnKeyAutomatically={true}
+              onFocus={() => setCustomAuthor('')}
+              placeholder="Your author"
+              autoCapitalize="words"
+              multiline={true}
+              onChangeText={text => authorInputHandler(text)}
+              returnKeyLabel='done'
+              value={customAuthor}
+              />
         </View>
         </View>
         <Button
@@ -97,11 +96,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   secondQuote: {
-    alignSelf: 'flex-start',
+    alignSelf: 'flex-end',
     justifyContent: 'flex-start',
   },
   quoteInput: {
     fontSize: 20,
+    margin: 10,
   },
   author: {
     flexDirection: 'row',

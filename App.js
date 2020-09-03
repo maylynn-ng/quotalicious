@@ -11,7 +11,15 @@ import FavFocus from './screens/FavFocus';
 import ButtonBar from './components/ButtonBar';
 import RickRoll from './screens/RICKROLL';
 import Quotalicious from './splashScreens/quotalicious';
-import { randomQuote, randomPicture, getKanye, getTaylor, getDonald, pictureBW, pictureBlur } from './ApiClientService';
+import {
+  randomQuote,
+  randomPicture,
+  getKanye,
+  getTaylor,
+  getDonald,
+  pictureBW,
+  pictureBlur,
+} from './ApiClientService';
 
 const Stack = createStackNavigator();
 
@@ -31,115 +39,109 @@ const App = () => {
     quote: quote.quote,
     author: quote.author,
     picture: picture,
-  }
+  };
 
   // DATA STORAGE
   const getSavedFavorites = async () => {
     try {
       const gottenKeys = await AsyncStorage.getAllKeys();
       const gottenFavorites = await AsyncStorage.multiGet(gottenKeys);
-      const favsToGet = gottenFavorites.map(item => item)
+      const favsToGet = gottenFavorites.map(item => item);
       setFavorites(favsToGet);
     } catch (error) {
       console.error('Houston, we have a problem:', error);
     }
-  }
+  };
 
   const storeData = async () => {
     try {
-      const jsonObj = JSON.stringify(objToSave)
-      await AsyncStorage.setItem(key, jsonObj)
-      setKey((key) => (+key + 1).toString())
-      setFavorites(getSavedFavorites())
+      const jsonObj = JSON.stringify(objToSave);
+      await AsyncStorage.setItem(key, jsonObj);
+      setKey(key => (+key + 1).toString());
+      setFavorites(getSavedFavorites());
     } catch (error) {
       console.error('oh no something happened:', error);
     }
-  }
+  };
 
-  const removeFavorite = async (unlike) => {
+  const removeFavorite = async unlike => {
     try {
-      await AsyncStorage.removeItem(unlike)
+      await AsyncStorage.removeItem(unlike);
       setIsLiked(false);
       getSavedFavorites();
     } catch (error) {
       console.error('no I dunnae think so', error);
     }
-  }
+  };
 
   // REQUESTS
   const getRandomQuote = () => {
-    randomQuote()
-      .then(res => {
-        setQuote({
-          quote: res.quote.quoteText,
-          author: res.quote.quoteAuthor})
-        });
-  }
+    randomQuote().then(res => {
+      setQuote({
+        quote: res.quote.quoteText,
+        author: res.quote.quoteAuthor,
+      });
+    });
+  };
 
   const getRandomPicture = () => {
-    randomPicture()
-      .then(res => setPicture(res.url))
-  }
+    randomPicture().then(res => setPicture(res.url));
+  };
   const getPictureBW = () => {
-    pictureBW()
-      .then(res => setPicture(res.url))
-  }
+    pictureBW().then(res => setPicture(res.url));
+  };
   const getPictureBlur = () => {
-    pictureBlur()
-      .then(res => setPicture(res.url))
-  }
+    pictureBlur().then(res => setPicture(res.url));
+  };
 
   const getKanyeQuote = () => {
     let quoteObj = {};
-    getKanye()
-      .then(res => {
-        quoteObj.quote = res.quote;
-        quoteObj.author = 'Kanye West'
-        setQuote(quoteObj)
-      })
-  }
+    getKanye().then(res => {
+      quoteObj.quote = res.quote;
+      quoteObj.author = 'Kanye West';
+      setQuote(quoteObj);
+    });
+  };
   const getTaylorQuote = () => {
     let quoteObj = {};
-    getTaylor()
-      .then(res => {
-        quoteObj.quote = res.quote;
-        quoteObj.author = 'Taylor Swift'
-        setQuote(quoteObj)
-      })
-  }
+    getTaylor().then(res => {
+      quoteObj.quote = res.quote;
+      quoteObj.author = 'Taylor Swift';
+      setQuote(quoteObj);
+    });
+  };
 
   const getDonaldQuote = () => {
     let quoteObj = {};
-    getDonald()
-      .then(res => {
-        quoteObj.quote = res.value;
-        quoteObj.author = 'Donald Trump';
-        setQuote(quoteObj)
-      })
-  }
+    getDonald().then(res => {
+      quoteObj.quote = res.value;
+      quoteObj.author = 'Donald Trump';
+      setQuote(quoteObj);
+    });
+  };
 
   // DECIDE WHICH QUOTES/PICTURES
-  const whichQuotes = (quoteType) => {
+  const whichQuotes = quoteType => {
     if (quoteType === 'random') getRandomQuote();
     else if (quoteType === 'kanye') getKanyeQuote();
     else if (quoteType === 'taylor') getTaylorQuote();
     else if (quoteType === 'trump') getDonaldQuote();
     setIsLiked(false);
-  }
+  };
 
-  const whichPictures = (pictureType) => {
+  const whichPictures = pictureType => {
     if (pictureType === 'random') getRandomPicture();
     else if (pictureType === 'bw') getPictureBW();
     else if (pictureType === 'blur') getPictureBlur();
     setIsLiked(false);
-  }
+  };
 
   // PERMISSIONS
   const getPermissionIos = async () => {
     if (Constants.platform.ios) {
       const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
       if (status !== 'granted') {
-        alert('Cant save no pics without no permissions')
+        alert('Cant save no pics without no permissions');
       }
     }
   };
@@ -149,17 +151,15 @@ const App = () => {
     getRandomPicture();
     getSavedFavorites();
     getPermissionIos();
-  }, [])
+  }, []);
 
   return (
     <NavigationContainer>
-        <Stack.Navigator headerMode='none' >
-          <Stack.Screen 
-            name="Quotalicious"
-            component={Quotalicious} />
-          <Stack.Screen 
-            name="Dashboard">
-              {(props) => <Dashboard
+      <Stack.Navigator headerMode="none">
+        <Stack.Screen name="Quotalicious" component={Quotalicious} />
+        <Stack.Screen name="Dashboard">
+          {props => (
+            <Dashboard
               whichQuotes={whichQuotes}
               quote={quote}
               setQuote={setQuote}
@@ -180,27 +180,20 @@ const App = () => {
               setIsLiked={setIsLiked}
               myKey={key}
               {...props}
-              />}
-          </Stack.Screen>
-          <Stack.Screen
-            name="SectionList"
-            component={ButtonBar} />
-          <Stack.Screen
-            name="FavoriteList" > 
-              {(props) => <FavoriteList
-              favorites={favorites}
-              removeFavorite={removeFavorite}
-              {...props} />}
-          </Stack.Screen>
-          <Stack.Screen 
-            name="FavFocus"
-            component={FavFocus} />
-          <Stack.Screen 
-            name="RickRoll"
-            component={RickRoll} />
-        </Stack.Navigator>
-      </NavigationContainer>
-  )
-}
+            />
+          )}
+        </Stack.Screen>
+        <Stack.Screen name="SectionList" component={ButtonBar} />
+        <Stack.Screen name="FavoriteList">
+          {props => (
+            <FavoriteList favorites={favorites} removeFavorite={removeFavorite} {...props} />
+          )}
+        </Stack.Screen>
+        <Stack.Screen name="FavFocus" component={FavFocus} />
+        <Stack.Screen name="RickRoll" component={RickRoll} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
 
 export default App;
