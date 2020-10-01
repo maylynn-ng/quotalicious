@@ -26,7 +26,7 @@
 
 <a href="https://ibb.co/4dTM26Y"><img src="https://i.ibb.co/dg26tdL/1.png" alt="1" border="0" /></a>
 
-A simple iOS app designed to make spreading inspiration not only easy, but an enjoyable experience. Quotalicious was built with the goal of creating something ready to deploy in the time frame I was given. I also wanted to hone my skills in API calls, passing states and try my hand at a new technology (React Native). I obviously found a new calling in animations :green_heart: Mostly I wanted an app that I could experience the entire life cycle of development within a deadline and make people laugh :grimacing: I suppose now I would like to deploy!
+A simple iOS app designed to make spreading inspiration not only an easy, but enjoyable experience. Quotalicious was built with the goal of creating something ready to deploy in the time frame I was given. I also wanted to hone my skills in API calls, passing states and try my hand at a new technology (React Native). I obviously found a new calling in animations :green_heart: Mostly I wanted an app that I could experience the entire life cycle of development within a deadline and make people laugh :grimacing: I suppose now I would like to deploy!
 
 
 <a href="https://ibb.co/Z2XXzjK"><img src="https://i.ibb.co/Bn332pj/2.png" alt="2" border="0" /></a>
@@ -80,7 +80,7 @@ On your iOS device: :iphone:
 
 1. Download '[Expo Client](https://apps.apple.com/gb/app/expo-client/id982107779)' from the App Store
 2. Open the camera on your phone & point at the QR code in the brower or CLI
-3. Select open safari
+3. Select open in expo
 
 
 
@@ -92,7 +92,7 @@ Let it bundle and start inspiring! :dizzy:
 
 ##### 🧰 Room for improvements
 
-- Gestures! Definitely need to wrap my head around this a bit better. The swipe is cool, but then I couldn't figure out how to have both swipe AND tap before the deadline. I just want everything to be touchable in all kinds of ways :pensive:
+- Gestures! Definitely need to wrap my head around this a bit better. The swipe is cool, but then I couldn't figure out how to have both swipe **AND** tap before the deadline. I just want everything to be touchable in all kinds of ways :pensive:
 
 - Animations!! Right, I know I've got a butt tonne of lottie animations, but animated transitions absolutely stumped me. I tried to implement those really awesome transitions that good old [Willy](https://www.youtube.com/user/wcandill) from FreeCodeCamp, but again, time was against me
 - Testing testing testing 
@@ -103,7 +103,7 @@ Let it bundle and start inspiring! :dizzy:
 
 - Deploy! :tada: 
 
-- Authentication! Loved the idea of being able to see what your friends have saved and send them via the app! But then .... if you can share it through all the socials, maybe this isn't top of the list.
+- Authentication! Loved the idea of being able to see what your friends have saved and send them via the app! But then .... if you can share it through all the socials, maybe this isn't top of the list. 🤔
 
 - A nice compromise might be to just have a profile page? 
 
