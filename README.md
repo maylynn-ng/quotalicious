@@ -8,17 +8,17 @@
 
 ### Table of contents
 
-[Screenshots](#screen-shots)
+:camera: [Screenshots](#screen-shots)
 
-[Video](#video)
+🎥 [Video](#video)
 
-[Tech Stack](#tech-stack)  
+🧱 [Tech Stack](#tech-stack)  
 
-[Running Quotalicious](#running-quotalicious)  
+🏃 [Running Quotalicious](#running-quotalicious)  
 
-[Observations](#observations)  
+🕵️‍[Observations](#observations)  
 
-[Author](#author)  
+✍️ [Author](#author)  
 
 
 
@@ -59,7 +59,7 @@ Here's a video demo on [YouTube](https://youtu.be/7rETqXeTP14)
 ##### What you'll need:
 
 - Code Editor (I use VS Code)
-- Expo Client installed on your phone
+- [Expo Client](https://apps.apple.com/gb/app/expo-client/id982107779) installed on your phone
 
 
 
@@ -94,7 +94,8 @@ Let it bundle and start inspiring! :dizzy:
 
 - Gestures! Definitely need to wrap my head around this a bit better. The swipe is cool, but then I couldn't figure out how to have both swipe **AND** tap before the deadline. I just want everything to be touchable in all kinds of ways :pensive:
 
-- Animations!! Right, I know I've got a butt tonne of lottie animations, but animated transitions absolutely stumped me. I tried to implement those really awesome transitions that good old [Willy](https://www.youtube.com/user/wcandill) from FreeCodeCamp, but again, time was against me
+- Animations!! Right, I know I've got a butt tonne of lottie animations, but animated transitions absolutely stumped me. I tried to implement those really awesome transitions from good ol' [Willy](https://www.youtube.com/user/wcandill) at FreeCodeCamp, but again, time was against me ⌛
+
 - Testing testing testing 
 
 
@@ -103,7 +104,7 @@ Let it bundle and start inspiring! :dizzy:
 
 - Deploy! :tada: 
 
-- Authentication! Loved the idea of being able to see what your friends have saved and send them via the app! But then .... if you can share it through all the socials, maybe this isn't top of the list. 🤔
+- Authentication!! 🗝️ Loved the idea of being able to see what your friends have saved and send them via the app! But then .... if you can share it through all the socials, maybe this isn't top of the list. 🤔
 
 - A nice compromise might be to just have a profile page? 
 
@@ -118,4 +119,3 @@ Let it bundle and start inspiring! :dizzy:
 ### Author
 
 [Maylynn Ng]  [Github](https://github.com/maylynn-ng/) [LinkedIn](https://www.linkedin.com/in/maylynn-ng/) 
->>>>>>> 753bda372f146d1bad8970a7ecc6f2cf448096b0
